@@ -2,7 +2,8 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Activiti\Client\ManagementService;
+use Activiti\Client\GuzzleGateway;
+use Activiti\Client\Service\ManagementService;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -12,6 +13,6 @@ $client = new Client([
     ]
 ]);
 
-$managment = new ManagementService($client);
-var_dump($managment->getEngine());
-var_dump($managment->getProperties());
+$managment = new ManagementService(new GuzzleGateway($client));
+dump($managment->getEngine());
+dump($managment->getProperties());

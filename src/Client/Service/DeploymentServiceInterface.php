@@ -2,21 +2,15 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\Deployment\Criteria;
+use Activiti\Client\Model\Deployment\DeploymentQuery;
 
 interface DeploymentServiceInterface
 {
-    public function getList(Criteria $criteria = null);
+    public function getDeploymentList(DeploymentQuery $query = null);
 
-    public function get($deploymentId);
+    public function getDeployment($deploymentId);
 
-    public function create($deployment);
+    public function createDeployment($deployment);
 
     public function delete($deploymentId);
-
-    public function getResources($deploymentId);
-
-    public function getResource($deploymentId, $resourceId);
-
-    public function getResourceContent($deploymentId, $resourceId);
 }

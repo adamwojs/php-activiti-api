@@ -2,20 +2,17 @@
 
 namespace Activiti\Client\Service;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Command\Guzzle\GuzzleClient;
+use Activiti\Client\GatewayInterface;
 
 abstract class AbstractService
 {
     /**
-     * @var GuzzleClient
+     * @var GatewayInterface
      */
-    protected $client;
+    protected $gateway;
 
-    public function __construct(ClientInterface $client)
+    public function __construct(GatewayInterface $gateway)
     {
-        $this->client = new GuzzleClient($client, $this->getServiceDescription());
+        $this->gateway = $gateway;
     }
-
-    protected abstract function getServiceDescription();
 }

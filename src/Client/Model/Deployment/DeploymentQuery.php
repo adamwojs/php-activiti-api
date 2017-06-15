@@ -4,7 +4,7 @@ namespace Activiti\Client\Model\Deployment;
 
 use Activiti\Client\Model\ValueObject;
 
-class Criteria extends ValueObject
+class DeploymentQuery extends ValueObject
 {
     public $name;
     public $nameLike;

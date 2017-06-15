@@ -2,9 +2,6 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\Management\Engine;
-use GuzzleHttp\Command\Guzzle\Description;
-
 class ManagementService extends AbstractService implements ManagementServiceInterface
 {
     /**
@@ -12,7 +9,7 @@ class ManagementService extends AbstractService implements ManagementServiceInte
      */
     public function getEngine()
     {
-        return $this->client->getEngine();
+        return $this->gateway->execute('management/engine');
     }
 
     /**
@@ -20,42 +17,6 @@ class ManagementService extends AbstractService implements ManagementServiceInte
      */
     public function getProperties()
     {
-        return $this->client->getProperties();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getServiceDescription()
-    {
-        return new Description([
-            'baseUri' => 'management/',
-            'operations' => [
-                'getEngine' => [
-                    'httpMethod' => 'GET',
-                    'responseModel' => Engine::class,
-                    'uri' => 'engine'
-                ],
-                'getProperties' => [
-                    'httpMethod' => 'GET',
-                    'uri' => 'properties',
-                    'responseModel' => 'PropertiesResponse',
-                ]
-            ],
-            'models' => [
-                Engine::class => [
-                    'type' => 'object',
-                    'additionalProperties' => [
-                        'location' => 'json'
-                    ]
-                ],
-                'PropertiesResponse' => [
-                    'type' => 'object',
-                    'additionalProperties' => [
-                        'location' => 'json'
-                    ]
-                ]
-            ]
-        ]);
+        return $this->gateway->execute('management/properties');
     }
 }

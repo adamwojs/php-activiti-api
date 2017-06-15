@@ -2,8 +2,8 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Activiti\Client\Service\DeploymentService;
 use Activiti\Client\GuzzleGateway;
+use Activiti\Client\Service\ProcessDefinitionService;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -13,5 +13,6 @@ $client = new Client([
     ]
 ]);
 
-$deployment = new DeploymentService(new GuzzleGateway($client));
-dump($deployment->createDeployment($argv[1]));
+$service = new ProcessDefinitionService(new GuzzleGateway($client));
+
+dump($service->getProcessDefinition($argv[1]));

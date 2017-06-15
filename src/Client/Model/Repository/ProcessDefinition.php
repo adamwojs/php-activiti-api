@@ -20,4 +20,5 @@ class ProcessDefinition extends ValueObject
     public $resource;
     public $diagramResource;
     public $startFormDefined;
+    public $tenantId;
 }
