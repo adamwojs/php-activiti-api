@@ -5,7 +5,7 @@ return [
         'identity/group-list' => [
             'httpMethod' => 'GET',
             'uri' => 'identity/groups',
-            'responseModel' => 'Activiti\\Client\\Model\\Group\\GroupList',
+            'responseModel' => 'Activiti\Client\Model\Group\GroupList',
             'parameters' => [
                 'id' => [
                     'type' => 'string',
@@ -47,7 +47,7 @@ return [
         'identity/group-get' => [
             'httpMethod' => 'GET',
             'uri' => 'identity/group/{groupId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Group\\Group',
+            'responseModel' => 'Activiti\Client\Model\Group',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -59,7 +59,7 @@ return [
         'identity/group-create' => [
             'httpMethod' => 'POST',
             'uri' => 'identity/grups',
-            'responseModel' => 'Activiti\\Client\\Model\\Group\\Group',
+            'responseModel' => 'Activiti\Client\Model\Group\Group',
             'parameters' => [
                 'id' => [
                     'type' => 'string',
@@ -81,7 +81,7 @@ return [
         'identity/group-update' => [
             'httpMethod' => 'PUT',
             'uri' => 'identity/grups/{groupId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Group\\Group',
+            'responseModel' => 'Activiti\Client\Model\Group\Group',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -146,7 +146,7 @@ return [
         'identity/user-list' => [
             'httpMethod' => 'GET',
             'uri' => 'identity/users',
-            'responseModel' => 'Activiti\\Client\\Model\\User\\UserList',
+            'responseModel' => 'Activiti\Client\Model\User\UserList',
             'parameters' => [
                 'id' => [
                     'type' => 'string',
@@ -203,7 +203,7 @@ return [
         'identity/user-get' => [
             'httpMethod' => 'GET',
             'uri' => 'identity/users/{userId}',
-            'responseModel' => 'Activiti\\Client\\Model\\User\\User',
+            'responseModel' => 'Activiti\Client\Model\User\User',
             'parameters' => [
                 'userId' => [
                     'type' => 'string',
@@ -215,7 +215,7 @@ return [
         'identity/user-create' => [
             'httpMethod' => 'POST',
             'uri' => 'identity/users',
-            'responseModel' => 'Activiti\\Client\\Model\\User\\User',
+            'responseModel' => 'Activiti\Client\Model\User\User',
             'parameters' => [
                 'id' => [
                     'type' => 'string',
@@ -247,7 +247,7 @@ return [
         'identity/user-update' => [
             'httpMethod' => 'PUT',
             'uri' => 'identity/users',
-            'responseModel' => 'Activiti\\Client\\Model\\User\\User',
+            'responseModel' => 'Activiti\Client\Model\User\User',
             'parameters' => [
                 'firstName' => [
                     'type' => 'string',
@@ -284,18 +284,18 @@ return [
         ],
         'management/engine' => [
             'httpMethod' => 'GET',
-            'responseModel' => 'Activiti\\Client\\Model\\Management\\Engine',
+            'responseModel' => 'Activiti\Client\Model\Management\Engine',
             'uri' => 'management/engine',
         ],
         'management/properties' => [
             'httpMethod' => 'GET',
             'uri' => 'management/properties',
-            'responseModel' => 'Activiti\\Client\\Model\\Management\\EngineProperties',
+            'responseModel' => 'Activiti\Client\Model\Management\EngineProperties',
         ],
         'repository/process-definition-list' => [
             'httpMethod' => 'GET',
             'uri' => 'repository/process-definitions',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\ProcessDefinitionList',
+            'responseModel' => 'Activiti\Client\Model\Repository\ProcessDefinitionList',
             'parameters' => [
                 'version' => [
                     'type' => 'integer',
@@ -377,7 +377,7 @@ return [
         'repository/process-definition-get' => [
             'httpMethod' => 'GET',
             'uri' => 'repository/process-definitions/{processDefinitionId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\ProcessDefinition',
+            'responseModel' => 'Activiti\Client\Model\Repository\ProcessDefinition',
             'parameters' => [
                 'processDefinitionId' => [
                     'type' => 'string',
@@ -389,7 +389,7 @@ return [
         'repository/process-definition-update' => [
             'httpMethod' => 'PUT',
             'uri' => 'repository/process-definitions/{processDefinitionId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\ProcessDefinition',
+            'responseModel' => 'Activiti\Client\Model\Repository\ProcessDefinition',
             'parameters' => [
                 'processDefinitionId' => [
                     'type' => 'string',
@@ -406,7 +406,7 @@ return [
         'repository/process-definition-get-resourcedata' => [
             'httpMethod' => 'GET',
             'uri' => 'repository/process-definitions/{processDefinitionId}/resourcedata',
-            'responseModel' => 'Activiti\\Client\\Model\\Deployment\\ResourceData',
+            'responseModel' => 'Activiti\Client\Model\Deployment\ResourceData',
             'parameters' => [
                 'processDefinitionId' => [
                     'type' => 'string',
@@ -418,7 +418,7 @@ return [
         'repository/process-definition-suspend' => [
             'httpMethod' => 'PUT',
             'uri' => 'repository/process-definitions/{processDefinitionId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\ProcessDefinition',
+            'responseModel' => 'Activiti\Client\Model\Repository\ProcessDefinition',
             'parameters' => [
                 'processDefinitionId' => [
                     'type' => 'string',
@@ -447,7 +447,7 @@ return [
         'repository/process-definition-activate' => [
             'httpMethod' => 'PUT',
             'uri' => 'repository/process-definitions/{processDefinitionId}',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\ProcessDefinition',
+            'responseModel' => 'Activiti\Client\Model\Repository\ProcessDefinition',
             'parameters' => [
                 'processDefinitionId' => [
                     'type' => 'string',
@@ -476,7 +476,7 @@ return [
         'repository/deployment-list' => [
             'httpMethod' => 'GET',
             'uri' => 'repository/deployments',
-            'responseModel' => 'Activiti\\Client\\Model\\Deployment\\DeploymentList',
+            'responseModel' => 'Activiti\Client\Model\Deployment\DeploymentList',
             'parameters' => [
                 'name' => [
                     'type' => 'string',
@@ -522,7 +522,7 @@ return [
         ],
         'repository/deployment-get' => [
             'httpMethod' => 'GET',
-            'responseModel' => 'Activiti\\Client\\Model\\Deployment\\Deployment',
+            'responseModel' => 'Activiti\Client\Model\Deployment\Deployment',
             'uri' => 'repository/deployments/{deploymentId}',
             'parameters' => [
                 'deploymentId' => [
@@ -535,7 +535,7 @@ return [
         'repository/deployment-create' => [
             'httpMethod' => 'POST',
             'uri' => 'repository/deployments',
-            'responseModel' => 'Activiti\\Client\\Model\\Deployment\\Deployment',
+            'responseModel' => 'Activiti\Client\Model\Deployment\Deployment',
             'parameters' => [
                 'deployment' => [
                     'location' => 'multipart',
@@ -555,7 +555,7 @@ return [
         ],
         'runtime/process-instance-get' => [
             'httpMethod' => 'GET',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\ProcessInstance',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\ProcessInstance',
             'uri' => 'runtime/process-instances/{processInstanceId}',
             'parameters' => [
                 'processInstanceId' => [
@@ -567,7 +567,7 @@ return [
         ],
         'runtime/process-instance-list' => [
             'httpMethod' => 'GET',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\ProcessInstanceList',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\ProcessInstanceList',
             'uri' => 'runtime/process-instances',
             'parameters' => [
                 'id' => [
@@ -644,7 +644,7 @@ return [
         ],
         'query/process-instances' => [
             'httpMethod' => 'POST',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\ProcessInstanceList',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\ProcessInstanceList',
             'uri' => 'query/process-instances',
             'parameters' => [
                 // TODO:
@@ -700,7 +700,7 @@ return [
         'runtime/process-instance-start' => [
             'httpMethod' => 'POST',
             'uri' => 'runtime/process-instances',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\ProcessInstance',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\ProcessInstance',
             'parameters' => [
                 'processInstanceId' => [
                     'type' => 'string',
@@ -760,7 +760,7 @@ return [
         ],
         'runtime/process-instance-identitylinks-add' => [
             'httpMethod' => 'POST',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\IdentityLink',
+            'responseModel' => 'Activiti\Client\Model\Repository\IdentityLink',
             'uri' => 'runtime/process-instances/{processInstanceId}/identitylinks',
             'parameters' => [
                 'processInstanceId' => [
@@ -782,7 +782,7 @@ return [
         ],
         'runtime/process-instance-identitylinks-del' => [
             'httpMethod' => 'DELETE',
-            'responseModel' => 'Activiti\\Client\\Model\\Repository\\IdentityLink',
+            'responseModel' => 'Activiti\Client\Model\Repository\IdentityLink',
             'uri' => 'runtime/process-instances/{processInstanceId}/identitylinks/users/{userId}/{type}',
             'parameters' => [
                 'processInstanceId' => [
@@ -816,7 +816,7 @@ return [
         ],
         'runtime/process-instance-variable-get' => [
             'httpMethod' => 'GET',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\Variable',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\Variable',
             'uri' => 'runtime/process-instances/{processInstanceId}/variables/{variableName}',
             'parameters' => [
                 'processInstanceId' => [
@@ -859,7 +859,7 @@ return [
         ],
         'runtime/process-instance-variable-update' => [
             'httpMethod' => 'PUT',
-            'responseModel' => 'Activiti\\Client\\Model\\ProcessInstance\\Variable',
+            'responseModel' => 'Activiti\Client\Model\ProcessInstance\Variable',
             'uri' => 'runtime/process-instances/{processInstanceId}/variables/{variableName}',
             'parameters' => [
                 'processInstanceId' => [
@@ -898,55 +898,55 @@ return [
         ],
     ],
     'models' => [
-        'Activiti\\Client\\Model\\User\\User' => [
+        'Activiti\Client\Model\User\User' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\User\\UserList' => [
+        'Activiti\Client\Model\User\UserList' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Deployment\\Deployment' => [
+        'Activiti\Client\Model\Deployment\Deployment' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Deployment\\DeploymentList' => [
+        'Activiti\Client\Model\Deployment\DeploymentList' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Deployment\\ResourceData' => [
+        'Activiti\Client\Model\Deployment\ResourceData' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Management\\Engine' => [
+        'Activiti\Client\Model\Management\Engine' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Management\\EngineProperties' => [
+        'Activiti\Client\Model\Management\EngineProperties' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Repository\\ProcessDefinitionList' => [
+        'Activiti\Client\Model\Repository\ProcessDefinitionList' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],
         ],
-        'Activiti\\Client\\Model\\Repository\\ProcessDefinition' => [
+        'Activiti\Client\Model\Repository\ProcessDefinition' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
