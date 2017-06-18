@@ -40,7 +40,11 @@ class GuzzleGateway implements GatewayInterface
                 ->getOperation($name)
                 ->getResponseModel();
 
-            return new $class($response->toArray());
+            if ($class) {
+                return new $class($response->toArray());
+            }
+
+            return null;
         } catch (\Exception $ex) {
             // TODO: Error handling
             throw $ex;

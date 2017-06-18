@@ -39,7 +39,9 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function updateGroup($groupId, GroupUpdate $data)
     {
-        return $this->gateway->execute('identity/group-update', (array)$data);
+        return $this->gateway->execute('identity/group-update', (array)$data + [
+            'groupId' => $groupId
+        ]);
     }
 
     /**

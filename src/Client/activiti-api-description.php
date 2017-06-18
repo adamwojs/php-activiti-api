@@ -9,45 +9,45 @@ return [
             'parameters' => [
                 'id' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'name' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'type' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'nameLike' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'member' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'potentialStarter' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
                 'sort' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'query',
                     'required' => false,
                 ],
             ],
         ],
         'identity/group-get' => [
             'httpMethod' => 'GET',
-            'uri' => 'identity/group/{groupId}',
-            'responseModel' => 'Activiti\Client\Model\Group',
+            'uri' => 'identity/groups/{groupId}',
+            'responseModel' => 'Activiti\Client\Model\Group\Group',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -58,7 +58,7 @@ return [
         ],
         'identity/group-create' => [
             'httpMethod' => 'POST',
-            'uri' => 'identity/grups',
+            'uri' => 'identity/groups',
             'responseModel' => 'Activiti\Client\Model\Group\Group',
             'parameters' => [
                 'id' => [
@@ -80,7 +80,7 @@ return [
         ],
         'identity/group-update' => [
             'httpMethod' => 'PUT',
-            'uri' => 'identity/grups/{groupId}',
+            'uri' => 'identity/groups/{groupId}',
             'responseModel' => 'Activiti\Client\Model\Group\Group',
             'parameters' => [
                 'groupId' => [
@@ -101,8 +101,8 @@ return [
             ],
         ],
         'identity/group-delete' => [
-            'httpMethod' => 'GET',
-            'uri' => 'identity/group/{groupId}',
+            'httpMethod' => 'DELETE',
+            'uri' => 'identity/groups/{groupId}',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -111,9 +111,10 @@ return [
                 ],
             ],
         ],
-        'identity/group-add-memeber' => [
+        'identity/group-add-member' => [
             'httpMethod' => 'POST',
-            'uri' => 'identity/group/{groupId}/members',
+            'uri' => 'identity/groups/{groupId}/members',
+            'responseModel' => 'Activiti\Client\Model\Group\GroupMember',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -127,9 +128,9 @@ return [
                 ],
             ],
         ],
-        'identity/group-del-memeber' => [
+        'identity/group-del-member' => [
             'httpMethod' => 'DELETE',
-            'uri' => 'identity/group/{groupId}/members',
+            'uri' => 'identity/groups/{groupId}/members/{userId}',
             'parameters' => [
                 'groupId' => [
                     'type' => 'string',
@@ -898,6 +899,24 @@ return [
         ],
     ],
     'models' => [
+        'Activiti\Client\Model\Group\Group' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json',
+            ],
+        ],
+        'Activiti\Client\Model\Group\GroupList' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json',
+            ],
+        ],
+        'Activiti\Client\Model\Group\GroupMember' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json',
+            ],
+        ],
         'Activiti\Client\Model\User\User' => [
             'type' => 'object',
             'additionalProperties' => [
