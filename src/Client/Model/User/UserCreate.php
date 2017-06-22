@@ -9,6 +9,6 @@ class UserCreate extends ValueObject
     public $id;
     public $firstName;
     public $lastName;
-    public $url;
     public $email;
+    public $password;
 }

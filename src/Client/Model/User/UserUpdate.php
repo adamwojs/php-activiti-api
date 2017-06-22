@@ -8,6 +8,6 @@ class UserUpdate extends ValueObject
 {
     public $firstName;
     public $lastName;
-    public $url;
     public $email;
+    public $password;
 }

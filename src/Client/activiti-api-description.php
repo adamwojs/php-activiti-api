@@ -220,7 +220,7 @@ return [
             'parameters' => [
                 'id' => [
                     'type' => 'string',
-                    'location' => 'uri',
+                    'location' => 'json',
                     'required' => true,
                 ],
                 'firstName' => [
@@ -247,9 +247,14 @@ return [
         ],
         'identity/user-update' => [
             'httpMethod' => 'PUT',
-            'uri' => 'identity/users',
+            'uri' => 'identity/users/{userId}',
             'responseModel' => 'Activiti\Client\Model\User\User',
             'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
                 'firstName' => [
                     'type' => 'string',
                     'location' => 'json',
