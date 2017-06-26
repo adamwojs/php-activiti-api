@@ -288,6 +288,95 @@ return [
                 ],
             ],
         ],
+        'identity/user-info-get' => [
+            'httpMethod' => 'GET',
+            'uri' => 'identity/users/{userId}/info/{key}',
+            'responseModel' => 'Activiti\Client\Model\User\UserInfo',
+            'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+                'key' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+            ],
+        ],
+        'identity/user-info-list' => [
+            'httpMethod' => 'GET',
+            'uri' => 'identity/users/{userId}/info',
+            'responseModel' => 'Activiti\Client\Model\User\UserInfoList',
+            'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ]
+            ],
+        ],
+        'identity/user-info-create' => [
+            'httpMethod' => 'POST',
+            'uri' => 'identity/users/{userId}/info',
+            'responseModel' => 'Activiti\Client\Model\User\UserInfo',
+            'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+                'key' => [
+                    'type' => 'string',
+                    'location' => 'json',
+                    'required' => true,
+                ],
+                'value' => [
+                    'type' => 'string',
+                    'location' => 'json',
+                    'required' => true,
+                ],
+            ],
+        ],
+        'identity/user-info-update' => [
+            'httpMethod' => 'PUT',
+            'uri' => 'identity/users/{userId}/info/{key}',
+            'responseModel' => 'Activiti\Client\Model\User\UserInfo',
+            'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+                'key' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+                'value' => [
+                    'type' => 'string',
+                    'location' => 'json',
+                    'required' => true,
+                ],
+            ],
+        ],
+        'identity/user-info-delete' => [
+            'httpMethod' => 'DELETE',
+            'uri' => 'identity/users/{userId}/info/{key}',
+            'parameters' => [
+                'userId' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+                'key' => [
+                    'type' => 'string',
+                    'location' => 'uri',
+                    'required' => true,
+                ],
+            ],
+        ],
         'management/engine' => [
             'httpMethod' => 'GET',
             'responseModel' => 'Activiti\Client\Model\Management\Engine',
@@ -929,6 +1018,18 @@ return [
             ],
         ],
         'Activiti\Client\Model\User\UserList' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json',
+            ],
+        ],
+        'Activiti\Client\Model\User\UserInfo' => [
+            'type' => 'object',
+            'additionalProperties' => [
+                'location' => 'json',
+            ],
+        ],
+        'Activiti\Client\Model\User\UserInfoList' => [
             'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',

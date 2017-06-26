@@ -5,7 +5,10 @@ namespace Activiti\Tests\Client\Service;
 use Activiti\Client\GuzzleGateway;
 use Activiti\Client\Model\User\User;
 use Activiti\Client\Model\User\UserCreate;
+use Activiti\Client\Model\User\UserInfo;
+use Activiti\Client\Model\User\UserInfoList;
 use Activiti\Client\Model\User\UserList;
+use Activiti\Client\Model\User\UserPicture;
 use Activiti\Client\Model\User\UserQuery;
 use Activiti\Client\Model\User\UserUpdate;
 use Activiti\Client\Service\UserService;
@@ -150,6 +153,134 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
         $this->assertEquals('identity/users/testuser', (string)$this->getLastRequest()->getUri());
+        $this->assertNull($result);
+    }
+
+    public function testGetUserPicture()
+    {
+        $this->fail("Missing implementation " . __METHOD__);
+    }
+
+    public function testSetUserPicture()
+    {
+        $this->fail("Missing implementation " . __METHOD__);
+    }
+
+    public function testGetUserInfo()
+    {
+        $expected = [
+            'key' => 'key1',
+            'value' => 'Value 1',
+            'url' => 'http://localhost:8182/identity/users/testuser/info/key1',
+        ];
+
+        $client = $this->createClient([
+            new Response(200, [], json_encode($expected))
+        ]);
+
+        $result = $this
+            ->createUserService($client)
+            ->getUserInfo('testuser', 'key1');
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
+        $this->assertEquals('identity/users/testuser/info/key1', (string)$this->getLastRequest()->getUri());
+        $this->assertEquals(new UserInfo($expected), $result);
+    }
+
+    public function testGetUserInfoList()
+    {
+        $expected = [
+            [
+                'key' => 'key1',
+                'url' => 'http://localhost:8182/identity/users/testuser/info/key1',
+            ],
+            [
+                'key' => 'key2',
+                'url' => 'http://localhost:8182/identity/users/testuser/info/key2',
+            ]
+        ];
+
+        $client = $this->createClient([
+            new Response(200, [], json_encode($expected))
+        ]);
+
+        $result = $this
+            ->createUserService($client)
+            ->getUserInfoList('testuser');
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
+        $this->assertEquals('identity/users/testuser/info', (string)$this->getLastRequest()->getUri());
+        $this->assertEquals(new UserInfoList($expected), $result);
+    }
+
+    public function testCreateUserInfo()
+    {
+        $expected = [
+            'key' => 'key1',
+            'value' => 'The updated value',
+            'url' => 'http://localhost:8182/identity/users/testuser/info/key1',
+        ];
+
+        $payload = [
+            'key' => 'key1',
+            'value' => 'The updated value',
+        ];
+
+        $client = $this->createClient([
+            new Response(200, [], json_encode($expected))
+        ]);
+
+        $result = $this
+            ->createUserService($client)
+            ->createUserInfo('testuser', 'key1', 'The updated value');
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
+        $this->assertEquals('identity/users/testuser/info', (string)$this->getLastRequest()->getUri());
+        $this->assertEquals(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertEquals(new UserInfo($expected), $result);
+    }
+
+    public function testUpdateUserInfo()
+    {
+        $expected = [
+            'key' => 'key1',
+            'value' => 'The updated value',
+            'url' => 'http://localhost:8182/identity/users/testuser/info/key1',
+        ];
+
+        $payload = [
+            'value' => 'The updated value',
+        ];
+
+        $client = $this->createClient([
+            new Response(200, [], json_encode($expected))
+        ]);
+
+        $result = $this
+            ->createUserService($client)
+            ->updateUserInfo('testuser', 'key1', 'The updated value');
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
+        $this->assertEquals('identity/users/testuser/info/key1', (string)$this->getLastRequest()->getUri());
+        $this->assertEquals(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertEquals(new UserInfo($expected), $result);
+    }
+
+    public function testDeleteUserInfo()
+    {
+        $client = $this->createClient([new Response(204)]);
+
+        $result = $this
+            ->createUserService($client)
+            ->deleteUserInfo('testuser', 'key1');
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
+        $this->assertEquals('identity/users/testuser/info/key1', (string)$this->getLastRequest()->getUri());
         $this->assertNull($result);
     }
 

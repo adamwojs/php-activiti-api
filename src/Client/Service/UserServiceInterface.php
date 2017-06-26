@@ -17,4 +17,18 @@ interface UserServiceInterface
     public function updateUser($userId, UserUpdate $data);
 
     public function deleteUser($userId);
+
+    public function getUserPicture($userId);
+
+    public function setUserPicture($userId, $picture);
+
+    public function getUserInfo($userId, $key);
+
+    public function getUserInfoList($userId);
+
+    public function createUserInfo($userId, $key, $value);
+
+    public function updateUserInfo($userId, $key, $value);
+
+    public function deleteUserInfo($userId, $key);
 }
