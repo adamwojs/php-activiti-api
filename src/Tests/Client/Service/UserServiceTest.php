@@ -156,12 +156,41 @@ class UserServiceTest extends AbstractServiceTest
 
     public function testGetUserPicture()
     {
-        $this->fail("Missing implementation " . __METHOD__);
+        $userId = 'kermit';
+
+        $expected = "(Some binary data)";
+
+        $client = $this->createClient([
+            new Response(200, [], $expected)
+        ]);
+
+        $actual = $this
+            ->createUserService($client)
+            ->getUserPicture($userId);
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
+        $this->assertEquals("identity/users/$userId/picture", (string)$this->getLastRequest()->getUri());
+        $this->assertEquals($expected, $actual);
     }
 
     public function testSetUserPicture()
     {
-        $this->fail("Missing implementation " . __METHOD__);
+        $userId = 'kermit';
+        $picture = "(Some binary data)";
+
+        $client = $this->createClient([
+            new Response(204, [], $picture)
+        ]);
+
+        $actual = $this
+            ->createUserService($client)
+            ->setUserPicture($userId, $picture);
+
+        $this->assertCount(1, $this->getHistory());
+        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
+        $this->assertEquals("identity/users/$userId/picture", (string)$this->getLastRequest()->getUri());
+        $this->assertNull($actual);
     }
 
     public function testGetUserInfo()

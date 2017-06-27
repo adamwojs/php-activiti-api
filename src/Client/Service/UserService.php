@@ -101,15 +101,17 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function setUserPicture($userId, $picture)
     {
-        return $this->call(function (ClientInterface $client) use ($userId, $picture) {
+        $this->call(function (ClientInterface $client) use ($userId, $picture) {
             $uri = uri_template('identity/users/{userId}/picture', [
                 'userId' => $userId
             ]);
 
-            return $client->request('POST', $uri, [
+            return $client->request('PUT', $uri, [
                 'multipart' => [
-                    'name' => 'picture',
-                    'contents' => $picture
+                    [
+                        'name' => 'picture',
+                        'contents' => $picture
+                    ]
                 ]
             ]);
         });
