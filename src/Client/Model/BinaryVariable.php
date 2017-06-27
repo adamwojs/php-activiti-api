@@ -2,9 +2,8 @@
 
 namespace Activiti\Client\Model;
 
-class BinaryVariable extends ValueObject
+class BinaryVariable extends Variable
 {
-    public $name;
-    public $type;
     public $file;
+
 }

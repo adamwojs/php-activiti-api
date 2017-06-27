@@ -5,6 +5,7 @@ namespace Activiti\Client\Service;
 use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\BinaryVariable;
 use Activiti\Client\Model\ProcessInstance\ProcessInstance;
+use Activiti\Client\Model\ProcessInstance\ProcessInstanceList;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
 use Activiti\Client\Model\Variable;
@@ -39,7 +40,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
             return $client->request('GET', 'runtime/process-instances', [
                 'query' => (array)$query
             ]);
-        }, ProcessInstance::class);
+        }, ProcessInstanceList::class);
     }
 
     /**
@@ -259,10 +260,10 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                 'multipart' => [
                     [
                         'name' => 'variable',
-                        'contents' => http_request_body_encode([
+                        'contents' => http_build_query([
                             'name' => $binaryVariable->name,
                             'type' => $binaryVariable->type
-                        ], [])
+                        ])
                     ],
                     [
                         'name' => 'contents',
@@ -270,7 +271,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                     ]
                 ]
             ]);
-        }, Variable::class);
+        }, BinaryVariable::class);
     }
 
     /**
@@ -287,10 +288,10 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                 'multipart' => [
                     [
                         'name' => 'variable',
-                        'contents' => http_request_body_encode([
+                        'contents' => http_build_query([
                             'name' => $binaryVariable->name,
                             'type' => $binaryVariable->type
-                        ], [])
+                        ])
                     ],
                     [
                         'name' => 'contents',
@@ -298,6 +299,6 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                     ]
                 ]
             ]);
-        }, Variable::class);
+        }, BinaryVariable::class);
     }
 }
