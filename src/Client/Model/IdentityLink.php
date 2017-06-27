@@ -1,8 +1,6 @@
 <?php
 
-namespace Activiti\Client\Model\Repository;
-
-use Activiti\Client\Model\ValueObject;
+namespace Activiti\Client\Model;
 
 class IdentityLink extends ValueObject
 {

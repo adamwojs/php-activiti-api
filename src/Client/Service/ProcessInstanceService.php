@@ -3,13 +3,13 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\ProcessInstance\BinaryVariable;
+use Activiti\Client\Model\BinaryVariable;
 use Activiti\Client\Model\ProcessInstance\ProcessInstance;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
-use Activiti\Client\Model\ProcessInstance\Variable;
+use Activiti\Client\Model\Variable;
 use Activiti\Client\Model\ProcessInstance\VariableUpdate;
-use Activiti\Client\Model\Repository\IdentityLink;
+use Activiti\Client\Model\IdentityLink;
 use Activiti\Client\Model\VariableList;
 use GuzzleHttp\ClientInterface;
 use function GuzzleHttp\uri_template;

@@ -3,9 +3,9 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\ProcessInstance\BinaryVariable;
-use Activiti\Client\Model\ProcessInstance\Variable;
-use Activiti\Client\Model\Repository\IdentityLink;
+use Activiti\Client\Model\BinaryVariable;
+use Activiti\Client\Model\Variable;
+use Activiti\Client\Model\IdentityLink;
 use Activiti\Client\Model\Task\Attachment;
 use Activiti\Client\Model\Task\AttachmentList;
 use Activiti\Client\Model\Task\Comment;

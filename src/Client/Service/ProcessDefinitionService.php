@@ -3,7 +3,7 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\Repository\IdentityLink;
+use Activiti\Client\Model\IdentityLink;
 use Activiti\Client\Model\Repository\ProcessDefinition;
 use Activiti\Client\Model\Repository\ProcessDefinitionList;
 use Activiti\Client\Model\Repository\ProcessDefinitionQuery;

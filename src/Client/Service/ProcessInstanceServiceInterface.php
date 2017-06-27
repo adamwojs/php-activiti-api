@@ -2,7 +2,7 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\ProcessInstance\BinaryVariable;
+use Activiti\Client\Model\BinaryVariable;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
 use Activiti\Client\Model\ProcessInstance\VariableUpdate;

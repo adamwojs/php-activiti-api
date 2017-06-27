@@ -1,8 +1,6 @@
 <?php
 
-namespace Activiti\Client\Model\ProcessInstance;
-
-use Activiti\Client\Model\ValueObject;
+namespace Activiti\Client\Model;
 
 class Variable extends ValueObject
 {
