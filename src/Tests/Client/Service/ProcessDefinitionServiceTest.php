@@ -43,19 +43,15 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->getProcessDefinitionList(new ProcessDefinitionQuery([
 
             ]));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/process-definitions');
         $this->assertEquals(new ProcessDefinitionList($expected), $actual);
     }
 
@@ -65,7 +61,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         $expected = [
             'id' => $processDefinitionId,
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId),
             'version' => 1,
             'key' => 'oneTaskProcess',
             'category' => 'Examples',
@@ -80,17 +76,13 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'startFormDefined' => false,
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->getProcessDefinition($processDefinitionId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId), (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
         $this->assertEquals(new ProcessDefinition($expected), $actual);
     }
 
@@ -100,7 +92,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         $expected = [
             'id' => $processDefinitionId,
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId),
             'version' => 1,
             'key' => 'oneTaskProcess',
             'category' => 'Examples (changed)',
@@ -119,18 +111,14 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'category' => 'Examples (changed)'
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->update($processDefinitionId, new ProcessDefinitionUpdate($payload));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId), (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('PUT');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new ProcessDefinition($expected), $actual);
     }
 
@@ -138,19 +126,15 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
     {
         $processDefinitionId = 'oneTaskProcess:1:4';
 
-        $expected = "Some binary data";
+        $expected = "(Some binary data)";
 
-        $client = $this->createClient([
-            new Response(200, [], $expected)
-        ]);
-
+        $client = $this->createClient(new Response(200, [], $expected));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->getResourceData($processDefinitionId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId) . '/resourcedata', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId) . '/resourcedata');
         $this->assertEquals($expected, $actual);
     }
 
@@ -160,7 +144,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         $expected = [
             'id' => $processDefinitionId,
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId),
             'version' => 1,
             'key' => 'oneTaskProcess',
             'category' => 'Examples',
@@ -181,18 +165,14 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'date' => '2013-04-15T00:42:12Z',
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->suspend($processDefinitionId, false, new \DateTime("2013-04-15T00:42:12Z"));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId), (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('PUT');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new ProcessDefinition($expected), $actual);
     }
 
@@ -202,7 +182,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         $expected = [
             'id' => $processDefinitionId,
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId),
             'version' => 1,
             'key' => 'oneTaskProcess',
             'category' => 'Examples',
@@ -223,18 +203,14 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'date' => '2013-04-15T00:42:12Z',
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->activate($processDefinitionId, false, new \DateTime("2013-04-15T00:42:12Z"));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId), (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('PUT');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new ProcessDefinition($expected), $actual);
     }
 
@@ -244,30 +220,26 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
 
         $expected = [
             [
-                'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4/identitylinks/groups/admin',
+                'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/groups/admin',
                 'user' => NULL,
                 'group' => 'admin',
                 'type' => 'candidate',
             ],
             [
-                'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4/identitylinks/users/kermit',
+                'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/users/kermit',
                 'user' => 'kermit',
                 'group' => NULL,
                 'type' => 'candidate',
             ],
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->getCandidateStarters($processDefinitionId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks');
         $this->assertEquals(new IdentityLinkList($expected), $actual);
     }
 
@@ -277,7 +249,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $userId = 'kermit';
 
         $expected = [
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4/identitylinks/users/kermit',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/users/kermit',
             'user' => 'kermit',
             'group' => null,
             'type' => 'candidate',
@@ -287,18 +259,14 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'userId' => $userId
         ];
 
-        $client = $this->createClient([
-            new Response(201, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->addUserCandidateStarter($processDefinitionId, $userId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks', (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks');
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new IdentityLink($expected), $actual);
     }
 
@@ -308,7 +276,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $groupId = 'sales';
 
         $expected = [
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4/identitylinks/groups/sales',
+            'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/groups/sales',
             'user' => null,
             'group' => 'sales',
             'type' => 'candidate',
@@ -318,69 +286,68 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'groupId' => $groupId
         ];
 
-        $client = $this->createClient([
-            new Response(201, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
             ->createProcessDefinitionService($client)
             ->addGroupCandidateStarter($processDefinitionId, $groupId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks', (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks');
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new IdentityLink($expected), $actual);
     }
 
     public function testDeleteCandidateStarter()
     {
         $processDefinitionId = 'oneTaskProcess:1:4';
+        $family = 'users';
+        $identityId = 'kermit';
 
         $expectedUri = 'repository/process-definitions/'
             . urlencode($processDefinitionId)
-            . '/identitylinks/users/kermit';
+            . '/identitylinks/'
+            . $family
+            . '/'
+            . $identityId;
 
-        $client = $this->createClient([
-            new Response(204)
-        ]);
-
+        $client = $this->createClient(new Response(204));
         $actual = $this
             ->createProcessDefinitionService($client)
-            ->deleteCandidateStarter($processDefinitionId, 'users', 'kermit');
+            ->deleteCandidateStarter($processDefinitionId, $family, $identityId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
-        $this->assertEquals($expectedUri, (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('DELETE');
+        $this->assertRequestUri($expectedUri);
         $this->assertNull($actual);
     }
 
     public function testGetCandidateStarter()
     {
         $processDefinitionId = 'oneTaskProcess:1:4';
+        $family = 'users';
+        $identityId = 'kermit';
+
+        $expectedUri = 'repository/process-definitions/'
+            . urlencode($processDefinitionId)
+            . '/identitylinks/'
+            . $family
+            . '/'
+            . $identityId;
 
         $expected = [
-            'url' => 'http://localhost:8182/repository/process-definitions/oneTaskProcess%3A1%3A4/identitylinks/users/kermit',
-            'user' => 'kermit',
+            'url' => 'http://localhost:8182/' . $expectedUri,
+            'user' => $identityId,
             'group' => NULL,
             'type' => 'candidate',
         ];
 
-        $expectedUri = 'repository/process-definitions/'
-            . urlencode($processDefinitionId)
-            . '/identitylinks/users/kermit';
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
-            ->getCandidateStarter($processDefinitionId, 'users', 'kermit');
+            ->getCandidateStarter($processDefinitionId, $family, $identityId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals($expectedUri, (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri($expectedUri);
         $this->assertEquals(new IdentityLink($expected), $actual);
     }
 

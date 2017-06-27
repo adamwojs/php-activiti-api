@@ -6,7 +6,6 @@ use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
 use Activiti\Client\Service\ManagementService;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Response;
 
 class ManagementServiceTest extends AbstractServiceTest
 {
@@ -19,17 +18,14 @@ class ManagementServiceTest extends AbstractServiceTest
             'exception' => null
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $result = $this
             ->createManagementService($client)
             ->getEngine();
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('management/engine', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('management/engine');
         $this->assertEquals(new Engine($expected), $result);
     }
 
@@ -41,15 +37,12 @@ class ManagementServiceTest extends AbstractServiceTest
             'schema.version' => '5.15',
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $result = $this
             ->createManagementService($client)
             ->getProperties();
 
-        $this->assertCount(1, $this->getHistory());
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
         $this->assertEquals('management/properties', (string)$this->getLastRequest()->getUri());
         $this->assertEquals(new EngineProperties($expected), $result);

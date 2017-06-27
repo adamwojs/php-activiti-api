@@ -35,18 +35,14 @@ class TaskServiceTest extends AbstractServiceTest
             'tenantId' => null,
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
-        $result = $this
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
+        $actual = $this
             ->createTaskService($client)
             ->getTask($taskId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('runtime/tasks/' . $taskId, (string)$this->getLastRequest()->getUri());
-        $this->assertEquals(new Task($expected), $result);
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('runtime/tasks/' . $taskId);
+        $this->assertEquals(new Task($expected), $actual);
     }
 
     public function testGetTaskOnNonExistingTaskId()
@@ -55,9 +51,9 @@ class TaskServiceTest extends AbstractServiceTest
 
         $taskId = 123456;
 
-        $client = $this->createClient([
-            $this->createActivitiErrorResponse(404, "Could not find a task with id '$taskId'.")
-        ]);
+        $client = $this->createClient($this->createActivitiErrorResponse(
+            404, "Could not find a task with id '$taskId'."
+        ));
 
         $this
             ->createTaskService($client)
@@ -93,19 +89,15 @@ class TaskServiceTest extends AbstractServiceTest
             // TODO: Expected value
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
-
-        $result = $this
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
+        $actual = $this
             ->createTaskService($client)
             ->updateTask($taskId, new TaskUpdate($payload));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
-        $this->assertEquals('runtime/tasks/' . $taskId, (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
-        $this->assertEquals(new Task($expected), $result);
+        $this->assertRequestMethod('PUT');
+        $this->assertRequestUri('runtime/tasks/' . $taskId);
+        $this->assertRequestJsonPayload($payload);
+        $this->assertEquals(new Task($expected), $actual);
     }
 
     /**
@@ -116,7 +108,7 @@ class TaskServiceTest extends AbstractServiceTest
         $this->expectException(ActivitiException::class);
 
         $this
-            ->createTaskService($this->createClient([$response]))
+            ->createTaskService($this->createClient($response))
             ->getTask(1);
     }
 
@@ -205,27 +197,6 @@ class TaskServiceTest extends AbstractServiceTest
                 'response' => $this->createActivitiErrorResponse(409)
             ]
         ];
-    }
-
-    private function doTestAction($action, $args, $payload)
-    {
-        $taskId = 1;
-
-        $expected = [
-            // TODO: Expected action call value
-        ];
-
-        $service = $this->createTaskService($this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]));
-
-        $result = call_user_func_array([$service, $action], $args);
-
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('runtime/tasks/' . $taskId, (string)$this->getLastRequest()->getUri());
-        $this->assertJsonStringEqualsJsonString(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
-        $this->assertEquals(new Task($expected), $result);
     }
 
     private function createTaskService(ClientInterface $client)

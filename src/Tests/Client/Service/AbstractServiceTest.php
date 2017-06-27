@@ -2,6 +2,7 @@
 
 namespace Activiti\Tests\Client\Service;
 
+use Activiti\Tests\RequestAssertTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
@@ -10,31 +11,41 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractServiceTest extends TestCase
 {
+    use RequestAssertTrait;
+
     /**
      * @var array
      */
     private $history;
 
+    protected function createJsonResponse($data, $statusCode = 200)
+    {
+        return new Response($statusCode, [
+            'Content-Type' => 'application/json'
+        ], json_encode($data));
+    }
+
     protected function createActivitiErrorResponse($statusCode, $message = null)
     {
-        return new Response($statusCode, [], json_encode([
+        return $this->createJsonResponse([
             'statusCode' => $statusCode,
             'message' => $message
-        ]));
+        ], $statusCode);
     }
 
     /**
-     * @param array|null $queue
+     * @param ResponseInterface[] $responses
      * @return ClientInterface
      */
-    protected function createClient(array $queue = null)
+    protected function createClient(ResponseInterface ...$responses)
     {
         $this->history = [];
 
-        $stack = HandlerStack::create(new MockHandler($queue));
+        $stack = HandlerStack::create(new MockHandler($responses));
         $stack->push(Middleware::history($this->history));
 
         return new Client(['handler' => $stack]);

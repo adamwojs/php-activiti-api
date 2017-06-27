@@ -16,24 +16,23 @@ class GroupServiceTest extends AbstractServiceTest
 {
     public function testGetGroup()
     {
+        $groupId = 'testgroup';
         $expected = [
-            'id' => 'testgroup',
-            'url' => 'http://localhost:8182/identity/groups/testgroup',
+            'id' => $groupId,
+            'url' => 'http://localhost:8182/identity/groups/' . $groupId,
             'name' => 'Test group',
             'type' => 'Test type',
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $result = $this
             ->createGroupService($client)
-            ->getGroup('testgroup');
+            ->getGroup($groupId);
 
         $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups/testgroup', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('identity/groups/' . $groupId);
         $this->assertEquals(new Group($expected), $result);
     }
 
@@ -58,9 +57,8 @@ class GroupServiceTest extends AbstractServiceTest
             'size' => 3,
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expectedResult))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expectedResult, 200));
+
         $result = $this
             ->createGroupService($client)
             ->getGroupList(new GroupQuery([
@@ -73,9 +71,8 @@ class GroupServiceTest extends AbstractServiceTest
                 'sort' => 'name'
             ]));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals($expectedUri, (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri($expectedUri);
         $this->assertEquals(new GroupList($expectedResult), $result);
     }
 
@@ -94,24 +91,24 @@ class GroupServiceTest extends AbstractServiceTest
             'type' => 'Test type',
         ];
 
-        $client = $this->createClient([
-            new Response(201, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
+
         $result = $this
             ->createGroupService($client)
             ->createGroup(new GroupCreate($payload));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups', (string)$this->getLastRequest()->getUri());
-        $this->assertEquals(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('identity/groups');
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new Group($expected), $result);
     }
 
     public function testUpdateGroup()
     {
+        $groupId = 'testgroup';
+
         $expected = [
-            'id' => 'testgroup',
+            'id' => $groupId,
             'url' => 'http://localhost:8182/identity/groups/testgroup',
             'name' => 'Test group (changed)',
             'type' => 'Test type (changed)',
@@ -122,65 +119,69 @@ class GroupServiceTest extends AbstractServiceTest
             'type' => 'Test type (changed)',
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
+
         $result = $this
             ->createGroupService($client)
-            ->updateGroup('testgroup', new GroupUpdate($payload));
+            ->updateGroup($groupId, new GroupUpdate($payload));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups/testgroup', (string)$this->getLastRequest()->getUri());
-        $this->assertEquals(json_encode($payload), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('PUT');
+        $this->assertRequestUri('identity/groups/' . $groupId);
+        $this->assertRequestJsonPayload($payload);
         $this->assertEquals(new Group($expected), $result);
     }
 
     public function testDeleteGroup()
     {
-        $client = $this->createClient([new Response(204)]);
+        $groupId = 'testgroup';
+
+        $client = $this->createClient(new Response(204));
         $result = $this
             ->createGroupService($client)
-            ->deleteGroup('testgroup');
+            ->deleteGroup($groupId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups/testgroup', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('DELETE');
+        $this->assertRequestUri('identity/groups/' . $groupId);
         $this->assertNull($result);
     }
 
     public function testAddMember()
     {
+        $groupId = 'sales';
+        $userId = 'kermit';
+
         $expected = [
-            'userId' => 'kermit',
-            'groupId' => 'sales',
-            'url' => 'http://localhost:8182/identity/groups/sales/members/kermit'
+            'userId' => $userId,
+            'groupId' => $groupId,
+            'url' => 'http://localhost:8182/identity/groups/' . $groupId . '/members/' . $userId
         ];
 
-        $client = $this->createClient([new Response(201, [], json_encode($expected))]);
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
+
         $result = $this
             ->createGroupService($client)
-            ->addMember('sales', 'kermit');
+            ->addMember($groupId, $userId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups/sales/members', (string)$this->getLastRequest()->getUri());
-        $this->assertEquals(json_encode([
-            'userId' => 'kermit'
-        ]), $this->getLastRequest()->getBody()->getContents());
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('identity/groups/' . $groupId . '/members');
+        $this->assertRequestJsonPayload([
+            'userId' => $userId
+        ]);
         $this->assertEquals(new GroupMember($expected), $result);
     }
 
     public function testDeleteMember()
     {
-        $client = $this->createClient([new Response(204)]);
+        $groupId = 'sales';
+        $userId = 'kermit';
+
+        $client = $this->createClient(new Response(204));
         $result = $this
             ->createGroupService($client)
-            ->deleteMember('sales', 'kermit');
+            ->deleteMember($groupId, $userId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
-        $this->assertEquals('identity/groups/sales/members/kermit', (string)$this->getLastRequest()->getUri());
+        $this->assertRequestMethod('DELETE');
+        $this->assertRequestUri('identity/groups/' . $groupId . '/members/' . $userId);
         $this->assertNull($result);
     }
 

@@ -32,9 +32,7 @@ class DeploymentServiceTest extends AbstractServiceTest
             'size' => 1,
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $actual = $this
             ->createDeploymentService($client)
@@ -42,9 +40,8 @@ class DeploymentServiceTest extends AbstractServiceTest
 
             ]));
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/deployments', $this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/deployments');
         $this->assertEquals(new DeploymentList($expected), $actual);
     }
 
@@ -61,17 +58,14 @@ class DeploymentServiceTest extends AbstractServiceTest
             'tenantId' => NULL,
         ];
 
-        $client = $this->createClient([
-            new Response(200, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $actual = $this
             ->createDeploymentService($client)
             ->getDeployment($deploymentId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('GET', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/deployments/' . $deploymentId, $this->getLastRequest()->getUri());
+        $this->assertRequestMethod('GET');
+        $this->assertRequestUri('repository/deployments/' . $deploymentId);
         $this->assertEquals(new Deployment($expected), $actual);
     }
 
@@ -88,36 +82,31 @@ class DeploymentServiceTest extends AbstractServiceTest
             'tenantId' => NULL,
         ];
 
-        $client = $this->createClient([
-            new Response(201, [], json_encode($expected))
-        ]);
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
 
         $actual = $this
             ->createDeploymentService($client)
             ->createDeployment($deployment);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('POST', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/deployments', $this->getLastRequest()->getUri());
-        $this->assertStringStartsWith('multipart/form-data', $this->getLastRequest()->getHeader('Content-Type')[0]);
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('repository/deployments');
+        $this->assertRequestContentType('multipart/form-data');
         // TODO: Assert POST repository/deployments body
+
     }
 
     public function testDelete()
     {
         $deploymentId = 10;
 
-        $client = $this->createClient([
-            new Response(204)
-        ]);
+        $client = $this->createClient(new Response(204));
 
         $actual = $this
             ->createDeploymentService($client)
             ->delete($deploymentId);
 
-        $this->assertCount(1, $this->getHistory());
-        $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
-        $this->assertEquals('repository/deployments/' . $deploymentId, $this->getLastRequest()->getUri());
+        $this->assertRequestMethod('DELETE');
+        $this->assertRequestUri('repository/deployments/' . $deploymentId);
         $this->assertNull($actual);
     }
 
