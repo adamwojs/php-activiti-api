@@ -2,7 +2,6 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\GuzzleGateway;
 use Activiti\Client\Model\Group\Group;
 use Activiti\Client\Model\Group\GroupCreate;
 use Activiti\Client\Model\Group\GroupList;
@@ -10,6 +9,7 @@ use Activiti\Client\Model\Group\GroupMember;
 use Activiti\Client\Model\Group\GroupQuery;
 use Activiti\Client\Model\Group\GroupUpdate;
 use Activiti\Client\Service\GroupService;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
 class GroupServiceTest extends AbstractServiceTest
@@ -27,8 +27,9 @@ class GroupServiceTest extends AbstractServiceTest
             new Response(200, [], json_encode($expected))
         ]);
 
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->getGroup('testgroup');
+        $result = $this
+            ->createGroupService($client)
+            ->getGroup('testgroup');
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
@@ -60,16 +61,17 @@ class GroupServiceTest extends AbstractServiceTest
         $client = $this->createClient([
             new Response(200, [], json_encode($expectedResult))
         ]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->getGroupList(new GroupQuery([
-            'id' => 'testgroup',
-            'type' => 'Test type',
-            'member' => 'kermit',
-            'name' => 'Test name',
-            'nameLike' => 'Test%',
-            'potentialStarter' => 'kermit',
-            'sort' => 'name'
-        ]));
+        $result = $this
+            ->createGroupService($client)
+            ->getGroupList(new GroupQuery([
+                'id' => 'testgroup',
+                'type' => 'Test type',
+                'member' => 'kermit',
+                'name' => 'Test name',
+                'nameLike' => 'Test%',
+                'potentialStarter' => 'kermit',
+                'sort' => 'name'
+            ]));
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
@@ -95,8 +97,9 @@ class GroupServiceTest extends AbstractServiceTest
         $client = $this->createClient([
             new Response(201, [], json_encode($expected))
         ]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->createGroup(new GroupCreate($payload));
+        $result = $this
+            ->createGroupService($client)
+            ->createGroup(new GroupCreate($payload));
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('POST', $this->getLastRequest()->getMethod());
@@ -122,8 +125,9 @@ class GroupServiceTest extends AbstractServiceTest
         $client = $this->createClient([
             new Response(200, [], json_encode($expected))
         ]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->updateGroup('testgroup', new GroupUpdate($payload));
+        $result = $this
+            ->createGroupService($client)
+            ->updateGroup('testgroup', new GroupUpdate($payload));
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('PUT', $this->getLastRequest()->getMethod());
@@ -135,8 +139,9 @@ class GroupServiceTest extends AbstractServiceTest
     public function testDeleteGroup()
     {
         $client = $this->createClient([new Response(204)]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->deleteGroup('testgroup');
+        $result = $this
+            ->createGroupService($client)
+            ->deleteGroup('testgroup');
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
@@ -153,8 +158,9 @@ class GroupServiceTest extends AbstractServiceTest
         ];
 
         $client = $this->createClient([new Response(201, [], json_encode($expected))]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->addMember('sales', 'kermit');
+        $result = $this
+            ->createGroupService($client)
+            ->addMember('sales', 'kermit');
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('POST', $this->getLastRequest()->getMethod());
@@ -168,13 +174,19 @@ class GroupServiceTest extends AbstractServiceTest
     public function testDeleteMember()
     {
         $client = $this->createClient([new Response(204)]);
-        $service = new GroupService(new GuzzleGateway($client));
-        $result = $service->deleteMember('sales', 'kermit');
+        $result = $this
+            ->createGroupService($client)
+            ->deleteMember('sales', 'kermit');
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('DELETE', $this->getLastRequest()->getMethod());
         $this->assertEquals('identity/groups/sales/members/kermit', (string)$this->getLastRequest()->getUri());
         $this->assertNull($result);
+    }
+
+    private function createGroupService(ClientInterface $client)
+    {
+        return new GroupService($client);
     }
 }
 

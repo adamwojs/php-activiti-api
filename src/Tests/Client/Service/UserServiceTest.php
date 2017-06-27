@@ -2,13 +2,11 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\GuzzleGateway;
 use Activiti\Client\Model\User\User;
 use Activiti\Client\Model\User\UserCreate;
 use Activiti\Client\Model\User\UserInfo;
 use Activiti\Client\Model\User\UserInfoList;
 use Activiti\Client\Model\User\UserList;
-use Activiti\Client\Model\User\UserPicture;
 use Activiti\Client\Model\User\UserQuery;
 use Activiti\Client\Model\User\UserUpdate;
 use Activiti\Client\Service\UserService;
@@ -286,6 +284,6 @@ class UserServiceTest extends AbstractServiceTest
 
     private function createUserService(ClientInterface $client)
     {
-        return new UserService(new GuzzleGateway($client));
+        return new UserService($client);
     }
 }

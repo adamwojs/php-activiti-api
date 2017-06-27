@@ -2,7 +2,6 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\Repository\ProcessDefinitionAction;
 use Activiti\Client\Model\Repository\ProcessDefinitionQuery;
 use Activiti\Client\Model\Repository\ProcessDefinitionUpdate;
 
@@ -16,8 +15,17 @@ interface ProcessDefinitionServiceInterface
 
     public function getResourceData($processDefinitionId);
 
-    public function suspend($processDefinitionId, ProcessDefinitionAction $data = null);
+    public function suspend($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null);
 
-    public function activate($processDefinitionId, ProcessDefinitionAction $data = null);
+    public function activate($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null);
 
+    public function getCandidateStarters($processDefinitionId);
+
+    public function addUserCandidateStarter($processDefinitionId, $userId);
+
+    public function addGroupCandidateStarter($processDefinitionId, $groupId);
+
+    public function deleteCandidateStarter($processDefinitionId, $family, $identityId);
+
+    public function getCandidateStarter($processDefinitionId, $family, $identityId);
 }

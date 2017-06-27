@@ -2,11 +2,10 @@
 
 namespace Activiti\Tests\Client\Service;
 
-
-use Activiti\Client\GuzzleGateway;
 use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
 use Activiti\Client\Service\ManagementService;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
 class ManagementServiceTest extends AbstractServiceTest
@@ -24,8 +23,9 @@ class ManagementServiceTest extends AbstractServiceTest
             new Response(200, [], json_encode($expected))
         ]);
 
-        $service = new ManagementService(new GuzzleGateway($client));
-        $result = $service->getEngine();
+        $result = $this
+            ->createManagementService($client)
+            ->getEngine();
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
@@ -45,12 +45,18 @@ class ManagementServiceTest extends AbstractServiceTest
             new Response(200, [], json_encode($expected))
         ]);
 
-        $service = new ManagementService(new GuzzleGateway($client));
-        $result = $service->getProperties();
+        $result = $this
+            ->createManagementService($client)
+            ->getProperties();
 
         $this->assertCount(1, $this->getHistory());
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
         $this->assertEquals('management/properties', (string)$this->getLastRequest()->getUri());
         $this->assertEquals(new EngineProperties($expected), $result);
+    }
+
+    private function createManagementService(ClientInterface $client)
+    {
+        return new ManagementService($client);
     }
 }

@@ -2,6 +2,10 @@
 
 namespace Activiti\Client\Service;
 
+use Activiti\Client\Model\Management\Engine;
+use Activiti\Client\Model\Management\EngineProperties;
+use GuzzleHttp\ClientInterface;
+
 class ManagementService extends AbstractService implements ManagementServiceInterface
 {
     /**
@@ -9,7 +13,9 @@ class ManagementService extends AbstractService implements ManagementServiceInte
      */
     public function getEngine()
     {
-        return $this->gateway->execute('management/engine');
+        return $this->call(function (ClientInterface $client) {
+            return $client->request('GET', 'management/engine');
+        }, Engine::class);
     }
 
     /**
@@ -17,6 +23,8 @@ class ManagementService extends AbstractService implements ManagementServiceInte
      */
     public function getProperties()
     {
-        return $this->gateway->execute('management/properties');
+        return $this->call(function (ClientInterface $client) {
+            return $client->request('GET', 'management/properties');
+        }, EngineProperties::class);
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Activiti\Client\Service\DeploymentService;
-use Activiti\Client\GuzzleGateway;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -13,5 +12,5 @@ $client = new Client([
     ]
 ]);
 
-$deployment = new DeploymentService(new GuzzleGateway($client));
+$deployment = new DeploymentService($client);
 dump($deployment->createDeployment($argv[1]));

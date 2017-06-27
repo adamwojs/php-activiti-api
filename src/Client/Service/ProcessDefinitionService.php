@@ -2,9 +2,14 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\Repository\ProcessDefinitionAction;
+use Activiti\Client\Model\IdentityLinkList;
+use Activiti\Client\Model\Repository\IdentityLink;
+use Activiti\Client\Model\Repository\ProcessDefinition;
+use Activiti\Client\Model\Repository\ProcessDefinitionList;
 use Activiti\Client\Model\Repository\ProcessDefinitionQuery;
 use Activiti\Client\Model\Repository\ProcessDefinitionUpdate;
+use GuzzleHttp\ClientInterface;
+use function GuzzleHttp\uri_template;
 
 class ProcessDefinitionService extends AbstractService implements ProcessDefinitionServiceInterface
 {
@@ -13,7 +18,11 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
      */
     public function getProcessDefinitionList(ProcessDefinitionQuery $query)
     {
-        return $this->gateway->execute('repository/process-definition-list', (array) $query);
+        return $this->call(function (ClientInterface $client) use ($query) {
+            return $client->request('GET', 'repository/process-definitions', [
+                'query' => (array)$query
+            ]);
+        }, ProcessDefinitionList::class);
     }
 
     /**
@@ -21,9 +30,13 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
      */
     public function getProcessDefinition($processDefinitionId)
     {
-        return $this->gateway->execute('repository/process-definition-get', [
-            'processDefinitionId' => $processDefinitionId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, ProcessDefinition::class);
     }
 
     /**
@@ -31,9 +44,15 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
      */
     public function update($processDefinitionId, ProcessDefinitionUpdate $data)
     {
-        return $this->gateway->execute('repository/process-definition-update', (array) $data + [
-            'processDefinitionId' => $processDefinitionId,
-        ]);
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId, $data) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('PUT', $uri, [
+                'json' => (array)$data
+            ]);
+        }, ProcessDefinition::class);
     }
 
     /**
@@ -41,28 +60,132 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
      */
     public function getResourceData($processDefinitionId)
     {
-        return $this->gateway->execute('repository/process-definition-get-resourcedata', [
-            'processDefinitionId' => $processDefinitionId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/resourcedata', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('GET', $uri);
+        });
     }
 
     /**
      * @inheritdoc
      */
-    public function suspend($processDefinitionId, ProcessDefinitionAction $data = null)
+    public function suspend($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null)
     {
-        return $this->gateway->execute('repository/process-definition-suspend', (array) $data + [
-            'processDefinitionId' => $processDefinitionId
-        ]);
+        return $this->callProcessDefinitionAction($processDefinitionId, 'suspend', $includeProcessInstances, $date);
     }
 
     /**
      * @inheritdoc
      */
-    public function activate($processDefinitionId, ProcessDefinitionAction $data = null)
+    public function activate($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null)
     {
-        return $this->gateway->execute('repository/process-definition-activate', (array) $data + [
+        return $this->callProcessDefinitionAction($processDefinitionId, 'activate', $includeProcessInstances, $date);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCandidateStarters($processDefinitionId)
+    {
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, IdentityLinkList::class);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addUserCandidateStarter($processDefinitionId, $userId)
+    {
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId, $userId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('POST', $uri, [
+                'json' => [
+                    'userId' => $userId
+                ]
+            ]);
+        }, IdentityLink::class);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addGroupCandidateStarter($processDefinitionId, $groupId)
+    {
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId, $groupId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
+                'processDefinitionId' => $processDefinitionId
+            ]);
+
+            return $client->request('POST', $uri, [
+                'json' => [
+                    'groupId' => $groupId
+                ]
+            ]);
+        }, IdentityLink::class);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteCandidateStarter($processDefinitionId, $family, $identityId)
+    {
+        $this->call(function (ClientInterface $client) use ($processDefinitionId, $family, $identityId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}', [
+                'processDefinitionId' => $processDefinitionId,
+                'family' => $family,
+                'identityId' => $identityId
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCandidateStarter($processDefinitionId, $family, $identityId)
+    {
+        return $this->call(function (ClientInterface $client) use ($processDefinitionId, $family, $identityId) {
+            $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}', [
+                'processDefinitionId' => $processDefinitionId,
+                'family' => $family,
+                'identityId' => $identityId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, IdentityLink::class);
+    }
+
+    protected function callProcessDefinitionAction($processDefinitionId,
+                                                   $action,
+                                                   $includeProcessInstances = null,
+                                                   \DateTime $date = null)
+    {
+        $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
             'processDefinitionId' => $processDefinitionId
         ]);
+
+        $payload = [
+            'action' => $action,
+            'includeProcessInstances' => $includeProcessInstances,
+            'date' => $date ? $date->format(\DateTime::ISO8601) : null
+        ];
+
+        return $this->call(function (ClientInterface $client) use ($uri, $payload) {
+            return $client->request('PUT', $uri, [
+                'json' => $payload
+            ]);
+        }, ProcessDefinition::class);
     }
 }

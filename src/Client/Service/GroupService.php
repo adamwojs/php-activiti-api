@@ -2,9 +2,14 @@
 
 namespace Activiti\Client\Service;
 
+use Activiti\Client\Model\Group\Group;
 use Activiti\Client\Model\Group\GroupCreate;
+use Activiti\Client\Model\Group\GroupList;
+use Activiti\Client\Model\Group\GroupMember;
 use Activiti\Client\Model\Group\GroupQuery;
 use Activiti\Client\Model\Group\GroupUpdate;
+use GuzzleHttp\ClientInterface;
+use function GuzzleHttp\uri_template;
 
 class GroupService extends AbstractService implements GroupServiceInterface
 {
@@ -13,9 +18,13 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function getGroup($groupId)
     {
-        return $this->gateway->execute('identity/group-get', [
-            'groupId' => $groupId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($groupId) {
+            $uri = uri_template('identity/groups/{groupId}', [
+                'groupId' => $groupId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, Group::class);
     }
 
     /**
@@ -23,7 +32,11 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function getGroupList(GroupQuery $query = null)
     {
-        return $this->gateway->execute('identity/group-list', (array)$query);
+        return $this->call(function (ClientInterface $client) use ($query) {
+            return $client->request('GET', 'identity/groups', [
+                'query' => (array)$query
+            ]);
+        }, GroupList::class);
     }
 
     /**
@@ -31,7 +44,11 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function createGroup(GroupCreate $data)
     {
-        return $this->gateway->execute('identity/group-create', (array)$data);
+        return $this->call(function (ClientInterface $client) use ($data) {
+            return $client->request('POST', 'identity/groups', [
+                'json' => (array)$data
+            ]);
+        }, Group::class);
     }
 
     /**
@@ -39,9 +56,15 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function updateGroup($groupId, GroupUpdate $data)
     {
-        return $this->gateway->execute('identity/group-update', (array)$data + [
-            'groupId' => $groupId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($groupId, $data) {
+            $uri = uri_template('identity/groups/{groupId}', [
+                'groupId' => $groupId
+            ]);
+
+            return $client->request('PUT', $uri, [
+                'json' => (array)$data
+            ]);
+        }, Group::class);
     }
 
     /**
@@ -49,9 +72,13 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function deleteGroup($groupId)
     {
-        $this->gateway->execute('identity/group-delete', [
-            'groupId' => $groupId
-        ]);
+        $this->call(function (ClientInterface $client) use ($groupId) {
+            $uri = uri_template('identity/groups/{groupId}', [
+                'groupId' => $groupId
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
     }
 
     /**
@@ -59,10 +86,17 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function addMember($groupId, $userId)
     {
-        return $this->gateway->execute('identity/group-add-member', [
-            'groupId' => $groupId,
-            'userId' => $userId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($groupId, $userId) {
+            $uri = uri_template('identity/groups/{groupId}/members', [
+                'groupId' => $groupId
+            ]);
+
+            return $client->request('POST', $uri, [
+                'json' => [
+                    'userId' => $userId
+                ]
+            ]);
+        }, GroupMember::class);
     }
 
     /**
@@ -70,9 +104,13 @@ class GroupService extends AbstractService implements GroupServiceInterface
      */
     public function deleteMember($groupId, $userId)
     {
-        return $this->gateway->execute('identity/group-del-member', [
-            'groupId' => $groupId,
-            'userId' => $userId
-        ]);
+        $this->call(function (ClientInterface $client) use ($groupId, $userId) {
+            $uri = uri_template('identity/groups/{groupId}/members/{userId}', [
+                'groupId' => $groupId,
+                'userId' => $userId
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
     }
 }

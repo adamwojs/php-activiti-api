@@ -7,6 +7,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
@@ -16,6 +17,14 @@ abstract class AbstractServiceTest extends TestCase
      * @var array
      */
     private $history;
+
+    protected function createActivitiErrorResponse($statusCode, $message = null)
+    {
+        return new Response($statusCode, [], json_encode([
+            'statusCode' => $statusCode,
+            'message' => $message
+        ]));
+    }
 
     /**
      * @param array|null $queue

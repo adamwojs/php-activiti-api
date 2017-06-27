@@ -1,8 +1,7 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use Activiti\Client\GuzzleGateway;
 use Activiti\Client\Service\ProcessDefinitionService;
 use GuzzleHttp\Client;
 
@@ -13,6 +12,6 @@ $client = new Client([
     ]
 ]);
 
-$service = new ProcessDefinitionService(new GuzzleGateway($client));
+$service = new ProcessDefinitionService($client);
 
 dump($service->getResourceData($argv[1]));

@@ -2,8 +2,11 @@
 
 namespace Activiti\Client\Service;
 
+use Activiti\Client\Model\Deployment\Deployment;
+use Activiti\Client\Model\Deployment\DeploymentList;
 use Activiti\Client\Model\Deployment\DeploymentQuery;
-use GuzzleHttp\Command\Guzzle\Description;
+use GuzzleHttp\ClientInterface;
+use function GuzzleHttp\uri_template;
 
 class DeploymentService extends AbstractService implements DeploymentServiceInterface
 {
@@ -12,7 +15,11 @@ class DeploymentService extends AbstractService implements DeploymentServiceInte
      */
     public function getDeploymentList(DeploymentQuery $query = null)
     {
-        return $this->gateway->execute('repository/deployment-list', (array) $query);
+        return $this->call(function (ClientInterface $client) use ($query) {
+            return $client->request('GET', 'repository/deployments', [
+                'query' => (array)$query
+            ]);
+        }, DeploymentList::class);
     }
 
     /**
@@ -20,9 +27,13 @@ class DeploymentService extends AbstractService implements DeploymentServiceInte
      */
     public function getDeployment($deploymentId)
     {
-        return $this->gateway->execute('repository/deployment-get', [
-            'deploymentId' => $deploymentId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($deploymentId) {
+            $uri = uri_template('repository/deployments/{deploymentId}', [
+                'deploymentId' => $deploymentId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, Deployment::class);
     }
 
     /**
@@ -30,9 +41,16 @@ class DeploymentService extends AbstractService implements DeploymentServiceInte
      */
     public function createDeployment($deployment)
     {
-        return $this->gateway->execute('repository/deployment-create', [
-            'deployment' => fopen($deployment, 'rb')
-        ]);
+        return $this->call(function (ClientInterface $client) use ($deployment) {
+            return $client->request('POST', 'repository/deployments', [
+                'multipart' => [
+                    [
+                        'name' => 'deployment',
+                        'contents' => $deployment
+                    ]
+                ]
+            ]);
+        }, Deployment::class);
     }
 
     /**
@@ -40,8 +58,12 @@ class DeploymentService extends AbstractService implements DeploymentServiceInte
      */
     public function delete($deploymentId)
     {
-        return $this->gateway->execute('repository/deployment-delete', [
-            'deploymentId' => $deploymentId
-        ]);
+        $this->call(function (ClientInterface $client) use ($deploymentId) {
+            $uri = uri_template('repository/deployments/{deploymentId}', [
+                'deploymentId' => $deploymentId
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
     }
 }

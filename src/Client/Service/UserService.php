@@ -2,10 +2,15 @@
 
 namespace Activiti\Client\Service;
 
+use Activiti\Client\Model\User\User;
 use Activiti\Client\Model\User\UserCreate;
+use Activiti\Client\Model\User\UserInfo;
+use Activiti\Client\Model\User\UserInfoList;
+use Activiti\Client\Model\User\UserList;
 use Activiti\Client\Model\User\UserQuery;
 use Activiti\Client\Model\User\UserUpdate;
-use Psr\Http\Message\StreamInterface;
+use GuzzleHttp\ClientInterface;
+use function GuzzleHttp\uri_template;
 
 class UserService extends AbstractService implements UserServiceInterface
 {
@@ -14,9 +19,13 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function getUser($userId)
     {
-        return $this->gateway->execute('identity/user-get', [
-            'userId' => $userId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($userId) {
+            $uri = uri_template('identity/users/{userId}', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, User::class);
     }
 
     /**
@@ -24,7 +33,11 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function getUsersList(UserQuery $query)
     {
-        return $this->gateway->execute('identity/user-list', (array)$query);
+        return $this->call(function (ClientInterface $client) use ($query) {
+            return $client->request('GET', 'identity/users', [
+                'query' => (array)$query
+            ]);
+        }, UserList::class);
     }
 
     /**
@@ -32,7 +45,11 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function createUser(UserCreate $data)
     {
-        return $this->gateway->execute('identity/user-create', (array)$data);
+        return $this->call(function (ClientInterface $client) use ($data) {
+            return $client->request('POST', 'identity/users', [
+                'json' => (array)$data
+            ]);
+        }, User::class);
     }
 
     /**
@@ -40,9 +57,15 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function updateUser($userId, UserUpdate $data)
     {
-        return $this->gateway->execute('identity/user-update', (array)$data + [
+        return $this->call(function (ClientInterface $client) use ($userId, $data) {
+            $uri = uri_template('identity/users/{userId}', [
                 'userId' => $userId
             ]);
+
+            return $client->request('PUT', $uri, [
+                'json' => (array)$data
+            ]);
+        }, User::class);
     }
 
     /**
@@ -50,9 +73,13 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function deleteUser($userId)
     {
-        $this->gateway->execute('identity/user-delete', [
-            'userId' => $userId
-        ]);
+        $this->call(function (ClientInterface $client) use ($userId) {
+            $uri = uri_template('identity/users/{userId}', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
     }
 
     /**
@@ -60,7 +87,13 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function getUserPicture($userId)
     {
-        throw new \Exception("Missing implementation of " . __METHOD__);
+        return $this->call(function (ClientInterface $client) use ($userId) {
+            $uri = uri_template('identity/users/{userId}/picture', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('GET', $uri);
+        });
     }
 
     /**
@@ -68,7 +101,18 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function setUserPicture($userId, $picture)
     {
-        throw new \Exception("Missing implementation of " . __METHOD__);
+        return $this->call(function (ClientInterface $client) use ($userId, $picture) {
+            $uri = uri_template('identity/users/{userId}/picture', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('POST', $uri, [
+                'multipart' => [
+                    'name' => 'picture',
+                    'contents' => $picture
+                ]
+            ]);
+        });
     }
 
     /**
@@ -76,10 +120,14 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function getUserInfo($userId, $key)
     {
-        return $this->gateway->execute('identity/user-info-get', [
-            'userId' => $userId,
-            'key' => $key
-        ]);
+        return $this->call(function (ClientInterface $client) use ($userId, $key) {
+            $uri = uri_template('identity/users/{userId}/info/{key}', [
+                'userId' => $userId,
+                'key' => $key
+            ]);
+
+            return $client->request('GET', $uri);
+        }, UserInfo::class);
     }
 
     /**
@@ -87,9 +135,13 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function getUserInfoList($userId)
     {
-        return $this->gateway->execute('identity/user-info-list', [
-            'userId' => $userId
-        ]);
+        return $this->call(function (ClientInterface $client) use ($userId) {
+            $uri = uri_template('identity/users/{userId}/info', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('GET', $uri);
+        }, UserInfoList::class);
     }
 
     /**
@@ -97,11 +149,18 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function updateUserInfo($userId, $key, $value)
     {
-        return $this->gateway->execute('identity/user-info-update', [
-            'userId' => $userId,
-            'key' => $key,
-            'value' => $value
-        ]);
+        return $this->call(function (ClientInterface $client) use ($userId, $key, $value) {
+            $uri = uri_template('identity/users/{userId}/info/{key}', [
+                'userId' => $userId,
+                'key' => $key
+            ]);
+
+            return $client->request('PUT', $uri, [
+                'json' => [
+                    'value' => $value
+                ]
+            ]);
+        }, UserInfo::class);
     }
 
     /**
@@ -109,11 +168,18 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function createUserInfo($userId, $key, $value)
     {
-        return $this->gateway->execute('identity/user-info-create', [
-            'userId' => $userId,
-            'key' => $key,
-            'value' => $value
-        ]);
+        return $this->call(function (ClientInterface $client) use ($userId, $key, $value) {
+            $uri = uri_template('identity/users/{userId}/info', [
+                'userId' => $userId
+            ]);
+
+            return $client->request('POST', $uri, [
+                'json' => [
+                    'key' => $key,
+                    'value' => $value
+                ]
+            ]);
+        }, UserInfo::class);
     }
 
     /**
@@ -121,9 +187,13 @@ class UserService extends AbstractService implements UserServiceInterface
      */
     public function deleteUserInfo($userId, $key)
     {
-        $this->gateway->execute('identity/user-info-delete', [
-            'userId' => $userId,
-            'key' => $key
-        ]);
+        $this->call(function (ClientInterface $client) use ($userId, $key) {
+            $uri = uri_template('identity/users/{userId}/info/{key}', [
+                'userId' => $userId,
+                'key' => $key
+            ]);
+
+            return $client->request('DELETE', $uri);
+        });
     }
 }
