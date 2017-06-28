@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Activiti\Client\Model\Repository\ProcessDefinitionQuery;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionQuery;
 use Activiti\Client\Service\ProcessDefinitionService;
 use GuzzleHttp\Client;
 

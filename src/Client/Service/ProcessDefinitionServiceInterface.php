@@ -2,8 +2,8 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\Repository\ProcessDefinitionQuery;
-use Activiti\Client\Model\Repository\ProcessDefinitionUpdate;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionQuery;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionUpdate;
 
 interface ProcessDefinitionServiceInterface
 {

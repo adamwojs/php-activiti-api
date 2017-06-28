@@ -4,10 +4,10 @@ namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\IdentityLink;
-use Activiti\Client\Model\Repository\ProcessDefinition;
-use Activiti\Client\Model\Repository\ProcessDefinitionList;
-use Activiti\Client\Model\Repository\ProcessDefinitionQuery;
-use Activiti\Client\Model\Repository\ProcessDefinitionUpdate;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinition;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionList;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionQuery;
+use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionUpdate;
 use Activiti\Client\Service\ProcessDefinitionService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;

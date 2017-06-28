@@ -1,6 +1,6 @@
 <?php
 
-namespace Activiti\Client\Model\Repository;
+namespace Activiti\Client\Model\ProcessDefinition;
 
 use Activiti\Client\Model\ValueObject;
 
