@@ -2,9 +2,9 @@
 
 namespace Activiti\Client\Model\User;
 
-use Activiti\Client\Model\ValueObject;
+use Activiti\Client\Model\AbstractQuery;
 
-class UserQuery extends ValueObject
+class UserQuery extends AbstractQuery
 {
     public $id;
     public $firstName;
@@ -15,5 +15,4 @@ class UserQuery extends ValueObject
     public $emailLike;
     public $memberOfGroup;
     public $potentialStarter;
-    public $sort;
 }

@@ -2,9 +2,9 @@
 
 namespace Activiti\Client\Model\Group;
 
-use Activiti\Client\Model\ValueObject;
+use Activiti\Client\Model\AbstractQuery;
 
-class GroupQuery extends ValueObject
+class GroupQuery extends AbstractQuery
 {
     public $id;
     public $name;
@@ -12,5 +12,4 @@ class GroupQuery extends ValueObject
     public $nameLike;
     public $member;
     public $potentialStarter;
-    public $sort;
 }

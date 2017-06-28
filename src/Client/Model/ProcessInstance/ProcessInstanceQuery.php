@@ -2,9 +2,9 @@
 
 namespace Activiti\Client\Model\ProcessInstance;
 
-use Activiti\Client\Model\ValueObject;
+use Activiti\Client\Model\AbstractQuery;
 
-class ProcessInstanceQuery extends ValueObject
+class ProcessInstanceQuery extends AbstractQuery
 {
     public $id;
     public $processDefinitionKey;
@@ -19,6 +19,5 @@ class ProcessInstanceQuery extends ValueObject
     public $tenantId;
     public $tenantIdLike;
     public $withoutTenantId;
-    public $sort;
     public $variables;
 }

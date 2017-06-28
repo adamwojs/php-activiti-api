@@ -2,7 +2,9 @@
 
 namespace Activiti\Client\Model\Repository;
 
-class ProcessDefinitionQuery
+use Activiti\Client\Model\AbstractQuery;
+
+class ProcessDefinitionQuery extends AbstractQuery
 {
 
 }

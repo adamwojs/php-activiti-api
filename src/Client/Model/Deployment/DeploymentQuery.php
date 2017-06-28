@@ -2,9 +2,9 @@
 
 namespace Activiti\Client\Model\Deployment;
 
-use Activiti\Client\Model\ValueObject;
+use Activiti\Client\Model\AbstractQuery;
 
-class DeploymentQuery extends ValueObject
+class DeploymentQuery extends AbstractQuery
 {
     public $name;
     public $nameLike;
@@ -13,5 +13,4 @@ class DeploymentQuery extends ValueObject
     public $tenantId;
     public $tenantIdLike;
     public $withoutTenantId;
-    public $sort;
 }

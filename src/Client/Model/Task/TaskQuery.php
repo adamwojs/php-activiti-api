@@ -2,9 +2,9 @@
 
 namespace Activiti\Client\Model\Task;
 
-use Activiti\Client\Model\ValueObject;
+use Activiti\Client\Model\AbstractQuery;
 
-class TaskQuery extends ValueObject
+class TaskQuery extends AbstractQuery
 {
     public $name;
     public $nameLike;
