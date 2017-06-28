@@ -11,4 +11,5 @@ class User extends ValueObject
     public $lastName;
     public $url;
     public $email;
+    public $pictureUrl;
 }
