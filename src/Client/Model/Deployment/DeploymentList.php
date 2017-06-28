@@ -6,8 +6,12 @@ use Activiti\Client\Model\AbstractList;
 
 class DeploymentList extends AbstractList
 {
-    public function __construct(array $properties = [])
+    public function __construct(array $response = [])
     {
-        parent::__construct($properties);
+        parent::__construct($response);
+
+        foreach ($response['data'] as $item) {
+            $this->data[] = new Deployment($item);
+        }
     }
 }
