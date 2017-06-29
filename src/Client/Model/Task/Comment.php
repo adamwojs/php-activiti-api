@@ -7,11 +7,11 @@ use Activiti\Client\Model\ValueObject;
 class Comment extends ValueObject
 {
     public $id;
-    public $taskUrl;
-    public $processInstanceUrl;
-    public $message;
     public $author;
+    public $message;
     public $time;
     public $taskId;
+    public $taskUrl;
     public $processInstanceId;
+    public $processInstanceUrl;
 }

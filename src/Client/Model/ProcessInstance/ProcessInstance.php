@@ -10,7 +10,13 @@ class ProcessInstance extends ValueObject
     public $url;
     public $businessKey;
     public $suspended;
+    public $ended;
+    public $processDefinitionId;
     public $processDefinitionUrl;
+    public $processDefinitionKey;
     public $activityId;
+    public $variables;
     public $tenantId;
+    public $name;
+    public $completed;
 }

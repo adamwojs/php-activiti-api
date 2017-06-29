@@ -7,10 +7,11 @@ use Activiti\Client\Model\ValueObject;
 class Event extends ValueObject
 {
     public $id;
-    public $action;
-    public $message;
-    public $taskUrl;
-    public $time;
     public $url;
+    public $action;
     public $userId;
+    public $time;
+    public $taskUrl;
+    public $processInstanceUrl;
+    public $message;
 }

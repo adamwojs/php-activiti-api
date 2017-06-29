@@ -9,6 +9,7 @@ class Attachment extends ValueObject
     public $id;
     public $url;
     public $name;
+    public $userId;
     public $description;
     public $type;
     public $taskUrl;

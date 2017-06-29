@@ -11,14 +11,14 @@ class ProcessDefinition extends ValueObject
     public $version;
     public $key;
     public $category;
-    public $suspended;
+    public $suspended = false;
     public $name;
     public $description;
     public $deploymentId;
     public $deploymentUrl;
-    public $graphicalNotationDefined;
+    public $graphicalNotationDefined = false;
     public $resource;
     public $diagramResource;
-    public $startFormDefined;
+    public $startFormDefined = false;
     public $tenantId;
 }

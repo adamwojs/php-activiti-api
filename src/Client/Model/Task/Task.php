@@ -6,21 +6,28 @@ use Activiti\Client\Model\ValueObject;
 
 class Task extends ValueObject
 {
-    public $assignee;
-    public $createTime;
-    public $delegationState;
-    public $description;
-    public $dueDate;
-    public $execution;
     public $id;
-    public $name;
+    public $url;
     public $owner;
-    public $parentTask;
+    public $assignee;
+    public $delegationState;
+    public $name;
+    public $description;
+    public $createTime;
+    public $dueDate;
     public $priority;
-    public $processDefinition;
-    public $processInstance;
     public $suspended;
     public $taskDefinitionKey;
-    public $url;
     public $tenantId;
+    public $category;
+    public $formKey;
+    public $parentTaskId;
+    public $parentTaskUrl;
+    public $executionId;
+    public $executionUrl;
+    public $processInstanceId;
+    public $processInstanceUrl;
+    public $processDefinitionId;
+    public $processDefinitionUrl;
+    public $variables;
 }
