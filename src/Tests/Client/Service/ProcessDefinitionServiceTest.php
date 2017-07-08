@@ -40,7 +40,6 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
             'sort' => 'name',
             'order' => 'asc',
             'size' => 1,
-
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));

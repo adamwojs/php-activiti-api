@@ -2,10 +2,8 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\BinaryVariable;
-use Activiti\Client\Model\Variable;
 use Activiti\Client\Model\IdentityLink;
+use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\Task\Attachment;
 use Activiti\Client\Model\Task\AttachmentList;
 use Activiti\Client\Model\Task\Comment;
@@ -16,6 +14,7 @@ use Activiti\Client\Model\Task\Task;
 use Activiti\Client\Model\Task\TaskList;
 use Activiti\Client\Model\Task\TaskQuery;
 use Activiti\Client\Model\Task\TaskUpdate;
+use Activiti\Client\Model\Variable;
 use Activiti\Client\Model\VariableList;
 use GuzzleHttp\ClientInterface;
 use function GuzzleHttp\uri_template;
@@ -63,7 +62,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     /**
      * @inheritdoc
      */
-    public function deleteTask($taskId, $cascadeHistory = false, $deleteReason = false)
+    public function deleteTask($taskId, $cascadeHistory = null, $deleteReason = null)
     {
         $this->call(function (ClientInterface $client) use ($taskId, $cascadeHistory, $deleteReason) {
             $uri = uri_template('runtime/tasks/{taskId}', [
@@ -170,7 +169,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
                     'scope' => $scope
                 ]
             ]);
-        }, BinaryVariable::class);
+        });
     }
 
     /**
@@ -284,18 +283,30 @@ class TaskService extends AbstractService implements TaskServiceInterface
     /**
      * @inheritdoc
      */
-    public function createIdentityLink($taskId, $userId, $type)
+    public function createIdentityLink($taskId, $family, $identityId, $type)
     {
-        return $this->call(function (ClientInterface $client) use ($taskId, $userId, $type) {
+        return $this->call(function (ClientInterface $client) use ($taskId, $family, $identityId, $type) {
             $uri = uri_template('runtime/tasks/{taskId}/identitylinks', [
                 'taskId' => $taskId
             ]);
 
+            $payload = [
+                'type' => $type
+            ];
+
+            switch ($family) {
+                case 'groups':
+                    $payload['groupId'] = $identityId;
+                    break;
+                case 'users':
+                    $payload['userId'] = $identityId;
+                    break;
+                default:
+                    throw new \InvalidArgumentException("Invalid family: $family");
+            }
+
             return $client->request('POST', $uri, [
-                'json' => [
-                    'userId' => $userId,
-                    'type' => $type
-                ]
+                'json' => $payload
             ]);
         }, IdentityLink::class);
     }
@@ -379,7 +390,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
 
         $this->call(function (ClientInterface $client) use ($uri) {
             return $client->request('DELETE', $uri);
-        }, Comment::class);
+        });
     }
 
     /**
@@ -484,7 +495,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
                 'action' => $action
             ]);
 
-            return $client->request('POST', $uri, [
+            return $client->request('PUT', $uri, [
                 'json' => $payload
             ]);
         }, Task::class);

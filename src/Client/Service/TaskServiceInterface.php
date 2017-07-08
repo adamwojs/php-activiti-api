@@ -44,7 +44,7 @@ interface TaskServiceInterface
 
     public function getIdentityLink($taskId, $family, $identityId, $type);
 
-    public function createIdentityLink($taskId, $userId, $type);
+    public function createIdentityLink($taskId, $family, $identityId, $type);
 
     public function deleteIdentityLink($taskId, $family, $identityId, $type);
 

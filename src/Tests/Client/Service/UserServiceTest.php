@@ -37,16 +37,24 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertEquals(new User($expected), $actual);
     }
 
+    private function createUserService(ClientInterface $client)
+    {
+        return new UserService($client);
+    }
+
     public function testGetUserList()
     {
+        $userId = 'testuser';
+
         $expectedResult = [
             'data' => [
                 [
-                    'id' => 'testgroup',
-                    'url' => 'http://localhost:8182/identity/groups/testgroup',
-                    'name' => 'Test group',
-                    'type' => 'Test type',
-                ],
+                    'id' => $userId,
+                    'firstName' => 'Fred',
+                    'lastName' => 'McDonald',
+                    'url' => 'http://localhost:8182/identity/users/' . $userId,
+                    'email' => 'no-reply@activiti.org',
+                ]
             ],
             'total' => 3,
             'start' => 0,
@@ -285,10 +293,5 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('DELETE');
         $this->assertRequestUri('identity/users/' . $userId . '/info/' . $key);
         $this->assertNull($actual);
-    }
-
-    private function createUserService(ClientInterface $client)
-    {
-        return new UserService($client);
     }
 }

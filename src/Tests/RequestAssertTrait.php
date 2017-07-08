@@ -22,7 +22,7 @@ trait RequestAssertTrait
             $request = $this->getLastRequest();
         }
 
-        PHPUnit_Framework_Assert::assertEquals($uri, $request->getUri());
+        PHPUnit_Framework_Assert::assertEquals($uri, (string)$request->getUri());
     }
 
     public function assertRequestJsonPayload($payload, RequestInterface $request = null)
