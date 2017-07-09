@@ -46,7 +46,6 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $actual = $this
             ->createProcessDefinitionService($client)
             ->getProcessDefinitionList(new ProcessDefinitionQuery([
-
             ]));
 
         $this->assertRequestMethod('GET');
@@ -107,7 +106,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         ];
 
         $payload = [
-            'category' => 'Examples (changed)'
+            'category' => 'Examples (changed)',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -125,7 +124,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
     {
         $processDefinitionId = 'oneTaskProcess:1:4';
 
-        $expected = "(Some binary data)";
+        $expected = '(Some binary data)';
 
         $client = $this->createClient(new Response(200, [], $expected));
         $actual = $this
@@ -167,7 +166,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
-            ->suspend($processDefinitionId, false, new \DateTime("2013-04-15T00:42:12Z"));
+            ->suspend($processDefinitionId, false, new \DateTime('2013-04-15T00:42:12Z'));
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
@@ -205,7 +204,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessDefinitionService($client)
-            ->activate($processDefinitionId, false, new \DateTime("2013-04-15T00:42:12Z"));
+            ->activate($processDefinitionId, false, new \DateTime('2013-04-15T00:42:12Z'));
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('repository/process-definitions/' . urlencode($processDefinitionId));
@@ -220,14 +219,14 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $expected = [
             [
                 'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/groups/admin',
-                'user' => NULL,
+                'user' => null,
                 'group' => 'admin',
                 'type' => 'candidate',
             ],
             [
                 'url' => 'http://localhost:8182/repository/process-definitions/' . urlencode($processDefinitionId) . '/identitylinks/users/kermit',
                 'user' => 'kermit',
-                'group' => NULL,
+                'group' => null,
                 'type' => 'candidate',
             ],
         ];
@@ -255,7 +254,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         ];
 
         $payload = [
-            'userId' => $userId
+            'userId' => $userId,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -282,7 +281,7 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         ];
 
         $payload = [
-            'groupId' => $groupId
+            'groupId' => $groupId,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -335,10 +334,9 @@ class ProcessDefinitionServiceTest extends AbstractServiceTest
         $expected = [
             'url' => 'http://localhost:8182/' . $expectedUri,
             'user' => $identityId,
-            'group' => NULL,
+            'group' => null,
             'type' => 'candidate',
         ];
-
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this

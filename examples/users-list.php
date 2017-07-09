@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 $client = new Client([
     'base_uri' => 'http://localhost:8080/activiti-rest/service/',
     'auth' => [
-        'kermit', 'kermit'
-    ]
+        'kermit', 'kermit',
+    ],
 ]);
 
 $service = new UserService($client);
@@ -27,10 +27,9 @@ do {
             $user->firstName,
             $user->lastName,
             $user->id,
-            $user->email
+            $user->email,
         ]);
     }
 
     $query->start += $query->size;
 } while ($users->total > $query->start);
-

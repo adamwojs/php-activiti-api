@@ -58,7 +58,7 @@ class TaskServiceTest extends AbstractServiceTest
     {
         $expected = [
             'data' => [
-                $this->getExampleTask()
+                $this->getExampleTask(),
             ],
             'total' => 1,
             'start' => 0,
@@ -149,7 +149,7 @@ class TaskServiceTest extends AbstractServiceTest
     {
         $expectedPayload = [
             'action' => 'complete',
-            'variables' => []
+            'variables' => [],
         ];
 
         $extraArgs = [];
@@ -173,7 +173,7 @@ class TaskServiceTest extends AbstractServiceTest
     {
         $expectedPayload = [
             'action' => 'claim',
-            'assignee' => 'kermit'
+            'assignee' => 'kermit',
         ];
 
         $this->doTestTaskActionSuccess('claim', ['kermit'], $expectedPayload);
@@ -195,7 +195,7 @@ class TaskServiceTest extends AbstractServiceTest
     {
         $expectedPayload = [
             'action' => 'delegate',
-            'assignee' => 'kermit'
+            'assignee' => 'kermit',
         ];
 
         $this->doTestTaskActionSuccess('delegate', ['kermit'], $expectedPayload);
@@ -213,7 +213,7 @@ class TaskServiceTest extends AbstractServiceTest
     {
         $action = 'resolve';
         $payload = [
-            'action' => $action
+            'action' => $action,
         ];
 
         $this->doTestTaskActionSuccess($action, [], $payload);
@@ -244,7 +244,7 @@ class TaskServiceTest extends AbstractServiceTest
                 'type' => 'string',
                 'value' => 'Hello World!',
                 'scope' => 'global',
-            ]
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -267,7 +267,7 @@ class TaskServiceTest extends AbstractServiceTest
             'name' => 'hello',
             'type' => 'string',
             'value' => 'Hello World!',
-            'scope' => 'global'
+            'scope' => 'global',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -315,7 +315,7 @@ class TaskServiceTest extends AbstractServiceTest
             [
                 'name' => 'intProcVar',
                 'type' => 'integer',
-                'value' => 123
+                'value' => 123,
             ],
         ];
 
@@ -327,7 +327,7 @@ class TaskServiceTest extends AbstractServiceTest
                     'name' => 'intProcVar',
                     'type' => 'integer',
                     'value' => 123,
-                ])
+                ]),
             ]);
 
         $this->assertRequestMethod('POST');
@@ -405,7 +405,7 @@ class TaskServiceTest extends AbstractServiceTest
                 'group' => null,
                 'type' => 'candidate',
                 'url' => 'http://localhost:8081/activiti-rest/service/runtime/tasks/' . $taskId . '/identitylinks/users/kermit/candidate',
-            ]
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -428,7 +428,7 @@ class TaskServiceTest extends AbstractServiceTest
                 'group' => 'sales',
                 'type' => 'candidate',
                 'url' => 'http://localhost:8081/activiti-rest/service/runtime/tasks/' . $taskId . '/identitylinks/groups/sales/candidate',
-            ]
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -531,7 +531,7 @@ class TaskServiceTest extends AbstractServiceTest
 
         $payload = [
             'message' => $message,
-            'saveProcessInstanceId' => $saveProcessInstanceId
+            'saveProcessInstanceId' => $saveProcessInstanceId,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -559,7 +559,7 @@ class TaskServiceTest extends AbstractServiceTest
                 'time' => '2014-07-13T13:13:52.232+08:00',
                 'taskId' => '101',
                 'processInstanceId' => '100',
-            ]
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -628,8 +628,8 @@ class TaskServiceTest extends AbstractServiceTest
                 'taskUrl' => 'http://localhost:8182/runtime/tasks/' . $taskId,
                 'time' => '2013-05-17T11:50:50.000+0000',
                 'url' => 'http://localhost:8182/runtime/tasks/' . $taskId . '/events/4',
-                'userId' => null
-            ]
+                'userId' => null,
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -657,7 +657,7 @@ class TaskServiceTest extends AbstractServiceTest
             'taskUrl' => 'http://localhost:8182/runtime/tasks/' . $taskId,
             'time' => '2013-05-17T11:50:50.000+0000',
             'url' => 'http://localhost:8182/runtime/tasks/' . $taskId . '/events/' . $eventId,
-            'userId' => null
+            'userId' => null,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected));
@@ -693,7 +693,7 @@ class TaskServiceTest extends AbstractServiceTest
         $payload = [
             'name' => $name,
             'description' => $description,
-            'type' => $type
+            'type' => $type,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -793,11 +793,11 @@ class TaskServiceTest extends AbstractServiceTest
     {
         return [
             [
-                'response' => $this->createActivitiErrorResponse(404)
+                'response' => $this->createActivitiErrorResponse(404),
             ],
             [
-                'response' => $this->createActivitiErrorResponse(409)
-            ]
+                'response' => $this->createActivitiErrorResponse(409),
+            ],
         ];
     }
 
@@ -805,14 +805,14 @@ class TaskServiceTest extends AbstractServiceTest
     {
         return [
             [
-                'response' => $this->createActivitiErrorResponse(400)
+                'response' => $this->createActivitiErrorResponse(400),
             ],
             [
-                'response' => $this->createActivitiErrorResponse(404)
+                'response' => $this->createActivitiErrorResponse(404),
             ],
             [
-                'response' => $this->createActivitiErrorResponse(409)
-            ]
+                'response' => $this->createActivitiErrorResponse(409),
+            ],
         ];
     }
 

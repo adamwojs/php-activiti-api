@@ -17,7 +17,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createDeploymentService()
     {
@@ -25,7 +25,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createGroupService()
     {
@@ -33,7 +33,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createManagementService()
     {
@@ -41,7 +41,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createProcessDefinitionService()
     {
@@ -49,7 +49,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createProcessInstanceService()
     {
@@ -57,7 +57,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createTaskService()
     {
@@ -65,7 +65,7 @@ class ServiceFactory implements ServiceFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createUserService()
     {

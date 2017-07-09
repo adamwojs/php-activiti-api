@@ -14,25 +14,25 @@ use function GuzzleHttp\uri_template;
 class ProcessDefinitionService extends AbstractService implements ProcessDefinitionServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProcessDefinitionList(ProcessDefinitionQuery $query)
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'repository/process-definitions', [
-                'query' => (array)$query
+                'query' => (array)$query,
             ]);
         }, ProcessDefinitionList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProcessDefinition($processDefinitionId)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('GET', $uri);
@@ -40,29 +40,29 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function update($processDefinitionId, ProcessDefinitionUpdate $data)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId, $data) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, ProcessDefinition::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getResourceData($processDefinitionId)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/resourcedata', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('GET', $uri);
@@ -70,7 +70,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function suspend($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null)
     {
@@ -78,7 +78,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function activate($processDefinitionId, $includeProcessInstances = null, \DateTime $date = null)
     {
@@ -86,13 +86,13 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCandidateStarters($processDefinitionId)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('GET', $uri);
@@ -100,43 +100,43 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addUserCandidateStarter($processDefinitionId, $userId)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId, $userId) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('POST', $uri, [
                 'json' => [
-                    'userId' => $userId
-                ]
+                    'userId' => $userId,
+                ],
             ]);
         }, IdentityLink::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addGroupCandidateStarter($processDefinitionId, $groupId)
     {
         return $this->call(function (ClientInterface $client) use ($processDefinitionId, $groupId) {
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks', [
-                'processDefinitionId' => $processDefinitionId
+                'processDefinitionId' => $processDefinitionId,
             ]);
 
             return $client->request('POST', $uri, [
                 'json' => [
-                    'groupId' => $groupId
-                ]
+                    'groupId' => $groupId,
+                ],
             ]);
         }, IdentityLink::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteCandidateStarter($processDefinitionId, $family, $identityId)
     {
@@ -144,7 +144,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}', [
                 'processDefinitionId' => $processDefinitionId,
                 'family' => $family,
-                'identityId' => $identityId
+                'identityId' => $identityId,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -152,7 +152,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCandidateStarter($processDefinitionId, $family, $identityId)
     {
@@ -160,7 +160,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
             $uri = uri_template('repository/process-definitions/{processDefinitionId}/identitylinks/{family}/{identityId}', [
                 'processDefinitionId' => $processDefinitionId,
                 'family' => $family,
-                'identityId' => $identityId
+                'identityId' => $identityId,
             ]);
 
             return $client->request('GET', $uri);
@@ -173,18 +173,18 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
                                                    \DateTime $date = null)
     {
         $uri = uri_template('repository/process-definitions/{processDefinitionId}', [
-            'processDefinitionId' => $processDefinitionId
+            'processDefinitionId' => $processDefinitionId,
         ]);
 
         $payload = [
             'action' => $action,
             'includeProcessInstances' => $includeProcessInstances,
-            'date' => $date ? $date->format(\DateTime::ISO8601) : null
+            'date' => $date ? $date->format(\DateTime::ISO8601) : null,
         ];
 
         return $this->call(function (ClientInterface $client) use ($uri, $payload) {
             return $client->request('PUT', $uri, [
-                'json' => $payload
+                'json' => $payload,
             ]);
         }, ProcessDefinition::class);
     }

@@ -4,7 +4,7 @@ namespace Activiti\Client\Model\User;
 
 class UserInfoList implements \ArrayAccess
 {
-   /**
+    /**
      * @var array
      */
     private $items;
@@ -12,13 +12,13 @@ class UserInfoList implements \ArrayAccess
     public function __construct(array $items)
     {
         $this->items = [];
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $this->items[] = new UserInfo($item);
         }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -26,7 +26,7 @@ class UserInfoList implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -34,7 +34,7 @@ class UserInfoList implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -42,7 +42,7 @@ class UserInfoList implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {

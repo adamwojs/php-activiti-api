@@ -24,7 +24,7 @@ abstract class AbstractList implements \IteratorAggregate
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIterator()
     {

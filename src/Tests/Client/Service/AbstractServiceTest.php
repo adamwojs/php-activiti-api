@@ -25,7 +25,7 @@ abstract class AbstractServiceTest extends TestCase
     protected function createJsonResponse($data, $statusCode = 200)
     {
         return new Response($statusCode, [
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ], json_encode($data));
     }
 
@@ -33,7 +33,7 @@ abstract class AbstractServiceTest extends TestCase
     {
         return $this->createJsonResponse([
             'statusCode' => $statusCode,
-            'message' => $message
+            'message' => $message,
         ], $statusCode);
     }
 

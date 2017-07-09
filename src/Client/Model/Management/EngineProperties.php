@@ -15,7 +15,7 @@ class EngineProperties implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -23,7 +23,7 @@ class EngineProperties implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -31,7 +31,7 @@ class EngineProperties implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -39,7 +39,7 @@ class EngineProperties implements \ArrayAccess
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {

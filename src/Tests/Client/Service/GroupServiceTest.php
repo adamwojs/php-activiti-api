@@ -68,7 +68,7 @@ class GroupServiceTest extends AbstractServiceTest
                 'name' => 'Test name',
                 'nameLike' => 'Test%',
                 'potentialStarter' => 'kermit',
-                'sort' => 'name'
+                'sort' => 'name',
             ]));
 
         $this->assertRequestMethod('GET');
@@ -153,7 +153,7 @@ class GroupServiceTest extends AbstractServiceTest
         $expected = [
             'userId' => $userId,
             'groupId' => $groupId,
-            'url' => 'http://localhost:8182/identity/groups/' . $groupId . '/members/' . $userId
+            'url' => 'http://localhost:8182/identity/groups/' . $groupId . '/members/' . $userId,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -165,7 +165,7 @@ class GroupServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('identity/groups/' . $groupId . '/members');
         $this->assertRequestJsonPayload([
-            'userId' => $userId
+            'userId' => $userId,
         ]);
         $this->assertEquals(new GroupMember($expected), $result);
     }
@@ -190,5 +190,3 @@ class GroupServiceTest extends AbstractServiceTest
         return new GroupService($client);
     }
 }
-
-

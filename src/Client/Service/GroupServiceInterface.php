@@ -9,37 +9,37 @@ use Activiti\Client\Model\Group\GroupUpdate;
 interface GroupServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroup($groupId);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroupList(GroupQuery $query = null);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createGroup(GroupCreate $data);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateGroup($groupId, GroupUpdate $data);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteGroup($groupId);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addMember($groupId, $userId);
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteMember($groupId, $userId);
 }

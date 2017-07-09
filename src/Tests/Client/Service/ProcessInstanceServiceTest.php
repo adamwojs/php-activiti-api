@@ -55,7 +55,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
                     'suspended' => false,
                     'processDefinitionUrl' => 'http://localhost:8182/repository/process-definitions/processOne%3A1%3A4',
                     'activityId' => 'processTask',
-                    'tenantId' => NULL,
+                    'tenantId' => null,
                 ],
             ],
             'total' => 2,
@@ -69,7 +69,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $actual = $this
             ->createProcessInstanceService($client)
             ->getProcessInstanceList(new ProcessInstanceQuery([
-
             ]));
 
         $this->assertRequestMethod('GET');
@@ -102,11 +101,11 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'suspended' => false,
             'processDefinitionUrl' => 'http://localhost:8182/repository/process-definitions/processOne%3A1%3A4',
             'activityId' => 'processTask',
-            'tenantId' => NULL,
+            'tenantId' => null,
         ];
 
         $payload = [
-            'action' => 'activate'
+            'action' => 'activate',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -131,11 +130,11 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'suspended' => false,
             'processDefinitionUrl' => 'http://localhost:8182/repository/process-definitions/processOne%3A1%3A4',
             'activityId' => 'processTask',
-            'tenantId' => NULL,
+            'tenantId' => null,
         ];
 
         $payload = [
-            'action' => 'suspend'
+            'action' => 'suspend',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -158,7 +157,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'suspended' => false,
             'processDefinitionUrl' => 'http://localhost:8182/repository/process-definitions/processOne%3A1%3A4',
             'activityId' => 'processTask',
-            'tenantId' => NULL,
+            'tenantId' => null,
         ];
 
         $payload = [
@@ -172,7 +171,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             ],
             'processDefinitionKey' => null,
             'message' => null,
-            'tenantId' => null
+            'tenantId' => null,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -288,7 +287,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             [
                 'name' => 'byteArrayProcVar',
                 'type' => 'binary',
-                'value' => NULL,
+                'value' => null,
                 'valueUrl' => 'http://localhost:8182/runtime/process-instances/' . $processInstanceId . '/variables/byteArrayProcVar/data',
                 'scope' => 'local',
             ],
@@ -343,7 +342,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             [
                 'name' => 'intProcVar',
                 'type' => 'integer',
-                'value' => 123
+                'value' => 123,
             ],
         ];
 
@@ -355,7 +354,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
                     'name' => 'intProcVar',
                     'type' => 'integer',
                     'value' => 123,
-                ])
+                ]),
             ]);
 
         $this->assertRequestMethod('POST');
@@ -379,7 +378,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $payload = [
             'name' => $variableName,
             'type' => 'integer',
-            'value' => 123
+            'value' => 123,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -410,7 +409,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             [
                 'name' => 'intProcVar',
                 'type' => 'integer',
-                'value' => 666
+                'value' => 666,
             ],
         ];
 
@@ -422,7 +421,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
                     'name' => 'intProcVar',
                     'type' => 'integer',
                     'value' => 666,
-                ])
+                ]),
             ]);
 
         $this->assertRequestMethod('PUT');
@@ -450,7 +449,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             ->createBinaryVariable($processInstanceId, new BinaryVariable([
                 'name' => $variableName,
                 'type' => 'binary',
-                'file' => stream_for("...")
+                'file' => stream_for('...'),
             ]));
 
         $this->assertRequestMethod('POST');
@@ -478,7 +477,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             ->updateBinaryVariable($processInstanceId, new BinaryVariable([
                 'name' => $variableName,
                 'type' => 'binary',
-                'file' => stream_for("...")
+                'file' => stream_for('...'),
             ]));
 
         $this->assertRequestMethod('PUT');

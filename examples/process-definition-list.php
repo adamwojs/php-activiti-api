@@ -9,8 +9,8 @@ use GuzzleHttp\Client;
 $client = new Client([
     'base_uri' => 'http://localhost:8080/activiti-rest/service/',
     'auth' => [
-        'kermit', 'kermit'
-    ]
+        'kermit', 'kermit',
+    ],
 ]);
 
 $service = new ProcessDefinitionService($client);

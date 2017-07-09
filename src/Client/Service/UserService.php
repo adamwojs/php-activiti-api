@@ -15,13 +15,13 @@ use function GuzzleHttp\uri_template;
 class UserService extends AbstractService implements UserServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUser($userId)
     {
         return $this->call(function (ClientInterface $client) use ($userId) {
             $uri = uri_template('identity/users/{userId}', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('GET', $uri);
@@ -29,53 +29,53 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUsersList(UserQuery $query)
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'identity/users', [
-                'query' => (array)$query
+                'query' => (array)$query,
             ]);
         }, UserList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createUser(UserCreate $data)
     {
         return $this->call(function (ClientInterface $client) use ($data) {
             return $client->request('POST', 'identity/users', [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, User::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateUser($userId, UserUpdate $data)
     {
         return $this->call(function (ClientInterface $client) use ($userId, $data) {
             $uri = uri_template('identity/users/{userId}', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, User::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteUser($userId)
     {
         $this->call(function (ClientInterface $client) use ($userId) {
             $uri = uri_template('identity/users/{userId}', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -83,13 +83,13 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUserPicture($userId)
     {
         return $this->call(function (ClientInterface $client) use ($userId) {
             $uri = uri_template('identity/users/{userId}/picture', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('GET', $uri);
@@ -97,35 +97,35 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUserPicture($userId, $picture)
     {
         $this->call(function (ClientInterface $client) use ($userId, $picture) {
             $uri = uri_template('identity/users/{userId}/picture', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('PUT', $uri, [
                 'multipart' => [
                     [
                         'name' => 'picture',
-                        'contents' => $picture
-                    ]
-                ]
+                        'contents' => $picture,
+                    ],
+                ],
             ]);
         });
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUserInfo($userId, $key)
     {
         return $this->call(function (ClientInterface $client) use ($userId, $key) {
             $uri = uri_template('identity/users/{userId}/info/{key}', [
                 'userId' => $userId,
-                'key' => $key
+                'key' => $key,
             ]);
 
             return $client->request('GET', $uri);
@@ -133,13 +133,13 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUserInfoList($userId)
     {
         return $this->call(function (ClientInterface $client) use ($userId) {
             $uri = uri_template('identity/users/{userId}/info', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('GET', $uri);
@@ -147,52 +147,52 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateUserInfo($userId, $key, $value)
     {
         return $this->call(function (ClientInterface $client) use ($userId, $key, $value) {
             $uri = uri_template('identity/users/{userId}/info/{key}', [
                 'userId' => $userId,
-                'key' => $key
+                'key' => $key,
             ]);
 
             return $client->request('PUT', $uri, [
                 'json' => [
-                    'value' => $value
-                ]
+                    'value' => $value,
+                ],
             ]);
         }, UserInfo::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createUserInfo($userId, $key, $value)
     {
         return $this->call(function (ClientInterface $client) use ($userId, $key, $value) {
             $uri = uri_template('identity/users/{userId}/info', [
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('POST', $uri, [
                 'json' => [
                     'key' => $key,
-                    'value' => $value
-                ]
+                    'value' => $value,
+                ],
             ]);
         }, UserInfo::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteUserInfo($userId, $key)
     {
         $this->call(function (ClientInterface $client) use ($userId, $key) {
             $uri = uri_template('identity/users/{userId}/info/{key}', [
                 'userId' => $userId,
-                'key' => $key
+                'key' => $key,
             ]);
 
             return $client->request('DELETE', $uri);

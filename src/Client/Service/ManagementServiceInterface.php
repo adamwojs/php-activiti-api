@@ -17,7 +17,7 @@ interface ManagementServiceInterface
     public function getProperties();
 
     /**
-     * Returns the engine that is used in this REST-service
+     * Returns the engine that is used in this REST-service.
      *
      * @see https://www.activiti.org/userguide/#_get_engine_info
      *

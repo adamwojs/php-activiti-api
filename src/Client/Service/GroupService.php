@@ -14,13 +14,13 @@ use function GuzzleHttp\uri_template;
 class GroupService extends AbstractService implements GroupServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroup($groupId)
     {
         return $this->call(function (ClientInterface $client) use ($groupId) {
             $uri = uri_template('identity/groups/{groupId}', [
-                'groupId' => $groupId
+                'groupId' => $groupId,
             ]);
 
             return $client->request('GET', $uri);
@@ -28,53 +28,53 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroupList(GroupQuery $query = null)
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'identity/groups', [
-                'query' => (array)$query
+                'query' => (array)$query,
             ]);
         }, GroupList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createGroup(GroupCreate $data)
     {
         return $this->call(function (ClientInterface $client) use ($data) {
             return $client->request('POST', 'identity/groups', [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, Group::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateGroup($groupId, GroupUpdate $data)
     {
         return $this->call(function (ClientInterface $client) use ($groupId, $data) {
             $uri = uri_template('identity/groups/{groupId}', [
-                'groupId' => $groupId
+                'groupId' => $groupId,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, Group::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteGroup($groupId)
     {
         $this->call(function (ClientInterface $client) use ($groupId) {
             $uri = uri_template('identity/groups/{groupId}', [
-                'groupId' => $groupId
+                'groupId' => $groupId,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -82,32 +82,32 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addMember($groupId, $userId)
     {
         return $this->call(function (ClientInterface $client) use ($groupId, $userId) {
             $uri = uri_template('identity/groups/{groupId}/members', [
-                'groupId' => $groupId
+                'groupId' => $groupId,
             ]);
 
             return $client->request('POST', $uri, [
                 'json' => [
-                    'userId' => $userId
-                ]
+                    'userId' => $userId,
+                ],
             ]);
         }, GroupMember::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteMember($groupId, $userId)
     {
         $this->call(function (ClientInterface $client) use ($groupId, $userId) {
             $uri = uri_template('identity/groups/{groupId}/members/{userId}', [
                 'groupId' => $groupId,
-                'userId' => $userId
+                'userId' => $userId,
             ]);
 
             return $client->request('DELETE', $uri);

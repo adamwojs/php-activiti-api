@@ -22,31 +22,31 @@ use function GuzzleHttp\uri_template;
 class TaskService extends AbstractService implements TaskServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTask($taskId)
     {
         return $this->call(function (ClientInterface $client) use ($taskId) {
             return $client->request('GET', uri_template('runtime/tasks/{taskId}', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]));
         }, Task::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTaskList(TaskQuery $query = null)
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'runtime/tasks', [
-                'query' => (array)$query
+                'query' => (array)$query,
             ]);
         }, TaskList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateTask($taskId, TaskUpdate $data)
     {
@@ -54,62 +54,62 @@ class TaskService extends AbstractService implements TaskServiceInterface
             $uri = uri_template('runtime/tasks/{taskId}', ['taskId' => $taskId]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, Task::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteTask($taskId, $cascadeHistory = null, $deleteReason = null)
     {
         $this->call(function (ClientInterface $client) use ($taskId, $cascadeHistory, $deleteReason) {
             $uri = uri_template('runtime/tasks/{taskId}', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('DELETE', $uri, [
                 'query' => [
                     'cascadeHistory' => $cascadeHistory,
-                    'deleteReason' => $deleteReason
-                ]
+                    'deleteReason' => $deleteReason,
+                ],
             ]);
         });
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function complete($taskId, array $variables = [])
     {
         return $this->callTaskAction($taskId, 'complete', [
-            'variables' => $variables
+            'variables' => $variables,
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function claim($taskId, $assignee)
     {
         return $this->callTaskAction($taskId, 'claim', [
-            'assignee' => $assignee
+            'assignee' => $assignee,
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delegate($taskId, $assignee)
     {
         return $this->callTaskAction($taskId, 'delegate', [
-            'assignee' => $assignee
+            'assignee' => $assignee,
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function resolve($taskId)
     {
@@ -117,104 +117,104 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVariables($taskId, $scope = null)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $scope) {
             $uri = uri_template('runtime/tasks/{taskId}/variables', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('GET', $uri, [
                 'query' => [
-                    'scope' => $scope
-                ]
+                    'scope' => $scope,
+                ],
             ]);
         }, VariableList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVariable($taskId, $variableName, $scope = null)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $variableName, $scope) {
             $uri = uri_template('runtime/tasks/{taskId}/variables/{variableName}', [
                 'taskId' => $taskId,
-                'variableName' => $variableName
+                'variableName' => $variableName,
             ]);
 
             return $client->request('GET', $uri, [
                 'query' => [
-                    'scope' => $scope
-                ]
+                    'scope' => $scope,
+                ],
             ]);
         }, Variable::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getBinaryVariable($taskId, $variableName, $scope = null)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $variableName, $scope) {
             $uri = uri_template('runtime/tasks/{taskId}/variables/{variableName}/data', [
                 'taskId' => $taskId,
-                'variableName' => $variableName
+                'variableName' => $variableName,
             ]);
 
             return $client->request('GET', $uri, [
                 'query' => [
-                    'scope' => $scope
-                ]
+                    'scope' => $scope,
+                ],
             ]);
         });
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createVariables($taskId, array $variables)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $variables) {
             $uri = uri_template('runtime/tasks/{taskId}/variables', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('POST', $uri, [
-                'json' => $variables
+                'json' => $variables,
             ]);
         }, VariableList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteVariable($taskId, $variableName, $scope = null)
     {
         $this->call(function (ClientInterface $client) use ($taskId, $variableName, $scope) {
             $uri = uri_template('runtime/tasks/{taskId}/variables/{variableName}', [
                 'taskId' => $taskId,
-                'variableName' => $variableName
+                'variableName' => $variableName,
             ]);
 
             return $client->request('DELETE', $uri, [
                 'query' => [
-                    'scope' => $scope
-                ]
+                    'scope' => $scope,
+                ],
             ]);
         });
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteLocalVariables($taskId)
     {
         $this->call(function (ClientInterface $client) use ($taskId) {
             $uri = uri_template('runtime/tasks/{taskId}/variables', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -222,13 +222,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIdentityLinks($taskId)
     {
         return $this->call(function (ClientInterface $client) use ($taskId) {
             $uri = uri_template('runtime/tasks/{taskId}/identitylinks', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('GET', $uri);
@@ -236,13 +236,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUsersIdentityLinks($taskId)
     {
         return $this->call(function (ClientInterface $client) use ($taskId) {
             $uri = uri_template('runtime/tasks/{taskId}/identitylinks/users', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('GET', $uri);
@@ -250,13 +250,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroupsIdentityLinks($taskId)
     {
         return $this->call(function (ClientInterface $client) use ($taskId) {
             $uri = uri_template('runtime/tasks/{taskId}/identitylinks/groups', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             return $client->request('GET', $uri);
@@ -264,7 +264,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIdentityLink($taskId, $family, $identityId, $type)
     {
@@ -273,7 +273,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
                 'taskId' => $taskId,
                 'family' => $family,
                 'identityId' => $identityId,
-                'type' => $type
+                'type' => $type,
             ]);
 
             return $client->request('GET', $uri);
@@ -281,17 +281,17 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createIdentityLink($taskId, $family, $identityId, $type)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $family, $identityId, $type) {
             $uri = uri_template('runtime/tasks/{taskId}/identitylinks', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             $payload = [
-                'type' => $type
+                'type' => $type,
             ];
 
             switch ($family) {
@@ -306,13 +306,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
             }
 
             return $client->request('POST', $uri, [
-                'json' => $payload
+                'json' => $payload,
             ]);
         }, IdentityLink::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteIdentityLink($taskId, $family, $identityId, $type)
     {
@@ -321,7 +321,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
                 'taskId' => $taskId,
                 'family' => $family,
                 'identityId' => $identityId,
-                'type' => $type
+                'type' => $type,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -329,33 +329,33 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createComment($taskId, $message, $saveProcessInstanceId = false)
     {
         $uri = uri_template('runtime/tasks/{taskId}/comments', [
-            'taskId' => $taskId
+            'taskId' => $taskId,
         ]);
 
         $payload = [
             'message' => $message,
-            'saveProcessInstanceId' => $saveProcessInstanceId
+            'saveProcessInstanceId' => $saveProcessInstanceId,
         ];
 
         return $this->call(function (ClientInterface $client) use ($uri, $payload) {
             return $client->request('POST', $uri, [
-                'json' => $payload
+                'json' => $payload,
             ]);
         }, Comment::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getComments($taskId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/comments', [
-            'taskId' => $taskId
+            'taskId' => $taskId,
         ]);
 
         return $this->call(function (ClientInterface $client) use ($uri) {
@@ -364,13 +364,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getComment($taskId, $commentId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/comments/{commentId}', [
             'taskId' => $taskId,
-            'commentId' => $commentId
+            'commentId' => $commentId,
         ]);
 
         return $this->call(function (ClientInterface $client) use ($uri) {
@@ -379,13 +379,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteComment($taskId, $commentId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/comments/{commentId}', [
             'taskId' => $taskId,
-            'commentId' => $commentId
+            'commentId' => $commentId,
         ]);
 
         $this->call(function (ClientInterface $client) use ($uri) {
@@ -394,7 +394,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEvents($taskId)
     {
@@ -408,13 +408,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEvent($taskId, $eventId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/events/{eventId}', [
             'taskId' => $taskId,
-            'eventId' => $eventId
+            'eventId' => $eventId,
         ]);
 
         return $this->call(function (ClientInterface $client) use ($uri) {
@@ -423,7 +423,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createAttachment($taskId, $name, $data, $description = null, $type = null)
     {
@@ -435,13 +435,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
 
         return $this->call(function (ClientInterface $client) use ($uri, $payload) {
             return $client->request('POST', $uri, [
-                'multipart' => $payload
+                'multipart' => $payload,
             ]);
         }, Attachment::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAttachments($taskId)
     {
@@ -455,13 +455,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAttachment($taskId, $attachmentId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/attachments/{attachmentId}', [
             'taskId' => $taskId,
-            'attachmentId' => $attachmentId
+            'attachmentId' => $attachmentId,
         ]);
 
         return $this->call(function (ClientInterface $client) use ($uri) {
@@ -470,13 +470,13 @@ class TaskService extends AbstractService implements TaskServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteAttachment($taskId, $attachmentId)
     {
         $uri = uri_template('runtime/tasks/{taskId}/attachments/{attachmentId}', [
             'taskId' => $taskId,
-            'attachmentId' => $attachmentId
+            'attachmentId' => $attachmentId,
         ]);
 
         $this->call(function (ClientInterface $client) use ($uri) {
@@ -488,15 +488,15 @@ class TaskService extends AbstractService implements TaskServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $action, $data) {
             $uri = uri_template('runtime/tasks/{taskId}', [
-                'taskId' => $taskId
+                'taskId' => $taskId,
             ]);
 
             $payload = array_merge($data, [
-                'action' => $action
+                'action' => $action,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => $payload
+                'json' => $payload,
             ]);
         }, Task::class);
     }
@@ -506,27 +506,27 @@ class TaskService extends AbstractService implements TaskServiceInterface
         $payload = [
             [
                 'name' => 'name',
-                'contents' => $name
-            ]
+                'contents' => $name,
+            ],
         ];
 
         if ($description !== null) {
             $payload[] = [
                 'name' => 'description',
-                'contents' => $description
+                'contents' => $description,
             ];
         }
 
         if ($type !== null) {
             $payload[] = [
                 'name' => 'type',
-                'contents' => $type
+                'contents' => $type,
             ];
         }
 
         $payload[] = [
             'name' => 'attachment',
-            'contents' => $data
+            'contents' => $data,
         ];
 
         return $payload;

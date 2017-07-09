@@ -18,7 +18,7 @@ class IdentityLinkList implements \IteratorAggregate
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIterator()
     {

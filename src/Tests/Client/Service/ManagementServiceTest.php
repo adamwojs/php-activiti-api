@@ -15,7 +15,7 @@ class ManagementServiceTest extends AbstractServiceTest
             'name' => 'default',
             'version' => '5.15',
             'resourceUrl' => 'file://activiti/activiti.cfg.xml',
-            'exception' => null
+            'exception' => null,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));

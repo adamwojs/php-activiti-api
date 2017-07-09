@@ -18,13 +18,13 @@ use function GuzzleHttp\uri_template;
 class ProcessInstanceService extends AbstractService implements ProcessInstanceServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProcessInstance($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('GET', $uri);
@@ -32,25 +32,25 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProcessInstanceList(ProcessInstanceQuery $query)
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'runtime/process-instances', [
-                'query' => (array)$query
+                'query' => (array)$query,
             ]);
         }, ProcessInstanceList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteProcessInstance($processInstanceId)
     {
         $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -58,61 +58,61 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function activate($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('PUT', $uri, [
                 'json' => [
-                    'action' => 'activate'
-                ]
+                    'action' => 'activate',
+                ],
             ]);
         }, ProcessInstance::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function suspend($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('PUT', $uri, [
                 'json' => [
-                    'action' => 'suspend'
-                ]
+                    'action' => 'suspend',
+                ],
             ]);
         }, ProcessInstance::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function start(ProcessInstanceCreate $data)
     {
         return $this->call(function (ClientInterface $client) use ($data) {
             return $client->request('POST', 'runtime/process-instances', [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, ProcessInstance::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDiagram($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/diagram', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('GET', $uri);
@@ -120,13 +120,13 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIdentityLinks($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/identitylinks', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('GET', $uri);
@@ -134,26 +134,26 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addIdentityLink($processInstanceId, $userId, $type)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $userId, $type) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/identitylinks', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('POST', $uri, [
                 'json' => [
                     'userId' => $userId,
-                    'type' => $type
-                ]
+                    'type' => $type,
+                ],
             ]);
         }, IdentityLink::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function removeIdentityLink($processInstanceId, $userId, $type)
     {
@@ -161,7 +161,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
             $uri = uri_template('runtime/process-instances/{processInstanceId}/identitylinks/users/{userId}/{type}', [
                 'processInstanceId' => $processInstanceId,
                 'userId' => $userId,
-                'type' => $type
+                'type' => $type,
             ]);
 
             return $client->request('DELETE', $uri);
@@ -169,13 +169,13 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVariables($processInstanceId)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('GET', $uri);
@@ -183,14 +183,14 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getVariable($processInstanceId, $variableName)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $variableName) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables/{variableName}', [
                 'processInstanceId' => $processInstanceId,
-                'variableName' => $variableName
+                'variableName' => $variableName,
             ]);
 
             return $client->request('GET', $uri);
@@ -198,62 +198,62 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createVariables($processInstanceId, array $variables)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $variables) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('POST', $uri, [
-                'json' => $variables
+                'json' => $variables,
             ]);
         }, VariableList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateVariables($processInstanceId, array $variables)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $variables) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => $variables
+                'json' => $variables,
             ]);
         }, VariableList::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateVariable($processInstanceId, $variableName, VariableUpdate $data)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $variableName, $data) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables/{variableName}', [
                 'processInstanceId' => $processInstanceId,
-                'variableName' => $variableName
+                'variableName' => $variableName,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data
+                'json' => (array)$data,
             ]);
         }, Variable::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createBinaryVariable($processInstanceId, BinaryVariable $binaryVariable)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $binaryVariable) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('POST', $uri, [
@@ -262,26 +262,26 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                         'name' => 'variable',
                         'contents' => http_build_query([
                             'name' => $binaryVariable->name,
-                            'type' => $binaryVariable->type
-                        ])
+                            'type' => $binaryVariable->type,
+                        ]),
                     ],
                     [
                         'name' => 'contents',
-                        'contents' => $binaryVariable->file
-                    ]
-                ]
+                        'contents' => $binaryVariable->file,
+                    ],
+                ],
             ]);
         }, BinaryVariable::class);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function updateBinaryVariable($processInstanceId, BinaryVariable $binaryVariable)
     {
         return $this->call(function (ClientInterface $client) use ($processInstanceId, $binaryVariable) {
             $uri = uri_template('runtime/process-instances/{processInstanceId}/variables', [
-                'processInstanceId' => $processInstanceId
+                'processInstanceId' => $processInstanceId,
             ]);
 
             return $client->request('PUT', $uri, [
@@ -290,14 +290,14 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                         'name' => 'variable',
                         'contents' => http_build_query([
                             'name' => $binaryVariable->name,
-                            'type' => $binaryVariable->type
-                        ])
+                            'type' => $binaryVariable->type,
+                        ]),
                     ],
                     [
                         'name' => 'contents',
-                        'contents' => $binaryVariable->file
-                    ]
-                ]
+                        'contents' => $binaryVariable->file,
+                    ],
+                ],
             ]);
         }, BinaryVariable::class);
     }

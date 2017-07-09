@@ -57,5 +57,5 @@ trait RequestAssertTrait
         }
     }
 
-    public abstract function getLastRequest();
+    abstract public function getLastRequest();
 }

@@ -54,7 +54,7 @@ class UserServiceTest extends AbstractServiceTest
                     'lastName' => 'McDonald',
                     'url' => 'http://localhost:8182/identity/users/' . $userId,
                     'email' => 'no-reply@activiti.org',
-                ]
+                ],
             ],
             'total' => 3,
             'start' => 0,
@@ -90,7 +90,7 @@ class UserServiceTest extends AbstractServiceTest
             'firstName' => 'Fred',
             'lastName' => 'McDonald',
             'email' => 'no-reply@activiti.org',
-            'password' => '123456'
+            'password' => '123456',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -120,7 +120,7 @@ class UserServiceTest extends AbstractServiceTest
             'firstName' => 'Fred',
             'lastName' => 'McDonald',
             'email' => 'no-reply@activiti.org',
-            'password' => '123456'
+            'password' => '123456',
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -212,7 +212,7 @@ class UserServiceTest extends AbstractServiceTest
             [
                 'key' => 'key2',
                 'url' => 'http://localhost:8182/identity/users/' . $userId . '/info/key2',
-            ]
+            ],
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -229,7 +229,7 @@ class UserServiceTest extends AbstractServiceTest
     {
         $userId = 'testuser';
         $key = 'key1';
-        $value = "The value";
+        $value = 'The value';
 
         $expected = [
             'key' => $key,

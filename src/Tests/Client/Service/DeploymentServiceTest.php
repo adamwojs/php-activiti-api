@@ -14,8 +14,7 @@ class DeploymentServiceTest extends AbstractServiceTest
     public function testGetDeploymentList()
     {
         $expected = [
-            'data' =>
-                [
+            'data' => [
                     [
                         'id' => '10',
                         'name' => 'activiti-examples.bar',
@@ -37,7 +36,6 @@ class DeploymentServiceTest extends AbstractServiceTest
         $actual = $this
             ->createDeploymentService($client)
             ->getDeploymentList(new DeploymentQuery([
-
             ]));
 
         $this->assertRequestMethod('GET');
@@ -55,7 +53,7 @@ class DeploymentServiceTest extends AbstractServiceTest
             'deploymentTime' => '2010-10-13T14:54:26.750+02:00',
             'category' => 'examples',
             'url' => 'http://localhost:8081/service/repository/deployments/10',
-            'tenantId' => NULL,
+            'tenantId' => null,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
@@ -79,7 +77,7 @@ class DeploymentServiceTest extends AbstractServiceTest
             'deploymentTime' => '2010-10-13T14:54:26.750+02:00',
             'category' => 'examples',
             'url' => 'http://localhost:8081/service/repository/deployments/10',
-            'tenantId' => NULL,
+            'tenantId' => null,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
@@ -92,7 +90,6 @@ class DeploymentServiceTest extends AbstractServiceTest
         $this->assertRequestUri('repository/deployments');
         $this->assertRequestContentType('multipart/form-data');
         // TODO: Assert POST repository/deployments body
-
     }
 
     public function testDelete()

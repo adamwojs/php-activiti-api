@@ -9,7 +9,7 @@ use GuzzleHttp\ClientInterface;
 class ManagementService extends AbstractService implements ManagementServiceInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEngine()
     {
@@ -19,7 +19,7 @@ class ManagementService extends AbstractService implements ManagementServiceInte
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getProperties()
     {
