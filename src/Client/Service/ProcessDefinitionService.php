@@ -179,7 +179,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
         $payload = [
             'action' => $action,
             'includeProcessInstances' => $includeProcessInstances,
-            'date' => $date ? $date->format(\DateTime::ISO8601) : null,
+            'date' => $date ? $date->format('Y-m-d\TH:i:s\Z') : null,
         ];
 
         return $this->call(function (ClientInterface $client) use ($uri, $payload) {
