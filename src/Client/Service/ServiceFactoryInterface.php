@@ -25,6 +25,11 @@ interface ServiceFactoryInterface
     public function createProcessDefinitionService();
 
     /**
+     * @return ProcessInstanceServiceInterface
+     */
+    public function createProcessInstanceService();
+
+    /**
      * @return TaskServiceInterface
      */
     public function createTaskService();

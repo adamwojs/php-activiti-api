@@ -51,6 +51,14 @@ class ServiceFactory implements ServiceFactoryInterface
     /**
      * @inheritdoc
      */
+    public function createProcessInstanceService()
+    {
+        return new ProcessInstanceService($this->client);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function createTaskService()
     {
         return new TaskService($this->client);
