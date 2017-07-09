@@ -14,7 +14,7 @@ use function GuzzleHttp\uri_template;
 class GroupService extends AbstractService implements GroupServiceInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getGroup($groupId)
     {
@@ -28,7 +28,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getGroupList(GroupQuery $query = null)
     {
@@ -40,7 +40,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function createGroup(GroupCreate $data)
     {
@@ -52,7 +52,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function updateGroup($groupId, GroupUpdate $data)
     {
@@ -68,7 +68,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function deleteGroup($groupId)
     {
@@ -82,7 +82,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function addMember($groupId, $userId)
     {
@@ -100,7 +100,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function deleteMember($groupId, $userId)
     {
