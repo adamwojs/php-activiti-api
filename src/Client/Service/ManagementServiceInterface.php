@@ -10,7 +10,7 @@ interface ManagementServiceInterface
     /**
      * Return properties used internally in the engine.
      *
-     * @https://www.activiti.org/userguide/#_get_engine_properties
+     * @see https://www.activiti.org/userguide/#_get_engine_properties
      *
      * @return EngineProperties
      */
