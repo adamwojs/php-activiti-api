@@ -5,6 +5,7 @@ namespace Activiti\Tests\Client\Service;
 use Activiti\Client\Exception\ActivitiException;
 use Activiti\Client\Model\IdentityLink;
 use Activiti\Client\Model\IdentityLinkList;
+use Activiti\Client\Model\ProcessInstance\VariableCreate;
 use Activiti\Client\Model\Task\Attachment;
 use Activiti\Client\Model\Task\AttachmentList;
 use Activiti\Client\Model\Task\Comment;
@@ -299,7 +300,40 @@ class TaskServiceTest extends AbstractServiceTest
 
     public function testCreateVariables()
     {
-        $this->fail("Missing implementation " . __METHOD__);
+        $taskId = $this->getExampleTaskId();
+
+        $expected = [
+            [
+                'name' => 'intProcVar',
+                'type' => 'integer',
+                'value' => 123,
+                'scope' => 'local',
+            ],
+        ];
+
+        $payload = [
+            [
+                'name' => 'intProcVar',
+                'type' => 'integer',
+                'value' => 123
+            ],
+        ];
+
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
+        $actual = $this
+            ->createTaskService($client)
+            ->createVariables($taskId, [
+                new VariableCreate([
+                    'name' => 'intProcVar',
+                    'type' => 'integer',
+                    'value' => 123,
+                ])
+            ]);
+
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('runtime/tasks/' . $taskId . '/variables');
+        $this->assertRequestJsonPayload($payload);
+        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testDeleteVariable()
@@ -638,7 +672,40 @@ class TaskServiceTest extends AbstractServiceTest
 
     public function testCreateAttachment()
     {
-        $this->fail("Missing implementation " . __METHOD__);
+        $taskId = $this->getExampleTaskId();
+        $name = 'Simple attachment';
+        $description = 'Simple attachment description';
+        $type = 'simpleType';
+        $data = 'http://google.com';
+
+        $expected = [
+            'id' => 3,
+            'url' => 'http://localhost:8182/runtime/tasks/' . $taskId . '/attachments',
+            'name' => 'Simple attachment',
+            'description' => 'Simple attachment description',
+            'type' => 'simpleType',
+            'taskUrl' => 'http://localhost:8182/runtime/tasks/' . $taskId,
+            'processInstanceUrl' => null,
+            'externalUrl' => 'http://activiti.org',
+            'contentUrl' => null,
+        ];
+
+        $payload = [
+            'name' => $name,
+            'description' => $description,
+            'type' => $type
+        ];
+
+        $client = $this->createClient($this->createJsonResponse($expected, 201));
+        $actual = $this
+            ->createTaskService($client)
+            ->createAttachment($taskId, $name, $data, $description, $type);
+
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('runtime/tasks/' . $taskId . '/attachments');
+        $this->assertRequestContentType('multipart/form-data');
+        // TODO: Assert payload
+        $this->assertEquals(new Attachment($expected), $actual);
     }
 
     public function testGetAttachments()

@@ -4,7 +4,6 @@ namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\Task\TaskQuery;
 use Activiti\Client\Model\Task\TaskUpdate;
-use Activiti\Client\Model\VariableList;
 
 interface TaskServiceInterface
 {
@@ -30,7 +29,7 @@ interface TaskServiceInterface
 
     public function getBinaryVariable($taskId, $variableName, $scope = null);
 
-    public function createVariables($taskId, VariableList $variables);
+    public function createVariables($taskId, array $variables);
 
     public function deleteVariable($taskId, $variableName, $scope = null);
 

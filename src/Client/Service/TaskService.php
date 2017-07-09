@@ -175,7 +175,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     /**
      * @inheritdoc
      */
-    public function createVariables($taskId, VariableList $variables)
+    public function createVariables($taskId, array $variables)
     {
         return $this->call(function (ClientInterface $client) use ($taskId, $variables) {
             $uri = uri_template('runtime/tasks/{taskId}/variables', [
@@ -183,7 +183,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
             ]);
 
             return $client->request('POST', $uri, [
-                'json' => (array)$variables
+                'json' => $variables
             ]);
         }, VariableList::class);
     }
