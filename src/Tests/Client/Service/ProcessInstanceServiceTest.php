@@ -3,16 +3,12 @@
 namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Model\BinaryVariable;
-use Activiti\Client\Model\IdentityLink;
-use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\ProcessInstance\ProcessInstance;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
-use Activiti\Client\Model\ProcessInstance\ProcessInstanceList;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
-use Activiti\Client\Model\ProcessInstance\VariableCreate;
-use Activiti\Client\Model\ProcessInstance\VariableUpdate;
-use Activiti\Client\Model\Variable;
-use Activiti\Client\Model\VariableList;
+use Activiti\Client\Model\VariableCreate;
+use Activiti\Client\Model\VariableUpdate;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\ProcessInstanceService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -41,7 +37,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId);
-        $this->assertEquals(new ProcessInstance($expected), $actual);
     }
 
     public function testGetProcessInstanceList()
@@ -65,15 +60,15 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'size' => 2,
         ];
 
+        $query = new ProcessInstanceQuery();
+
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
             ->createProcessInstanceService($client)
-            ->getProcessInstanceList(new ProcessInstanceQuery([
-            ]));
+            ->getProcessInstanceList($query);
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/process-instances');
-        $this->assertEquals(new ProcessInstanceList($expected), $actual);
     }
 
     public function testDeleteProcessInstance()
@@ -116,7 +111,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new ProcessInstance($expected), $actual);
     }
 
     public function testSuspend()
@@ -145,7 +139,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new ProcessInstance($expected), $actual);
     }
 
     public function testStart()
@@ -166,6 +159,7 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'variables' => [
                 [
                     'name' => 'myVar',
+                    'type' => 'string',
                     'value' => 'This is a variable',
                 ],
             ],
@@ -174,15 +168,24 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'tenantId' => null,
         ];
 
+        $data = new ProcessInstanceCreate();
+        $data->setProcessDefinitionId('oneTaskProcess:1:158');
+        $data->setBusinessKey('myBusinessKey');
+        $data->setVariables([
+            new VariableCreate('myVar', 'string', 'This is a variable')
+        ]);
+        $data->setProcessDefinitionKey(null);
+        $data->setMessage(null);
+        $data->setTenantId(null);
+
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
-            ->createProcessInstanceService($client)
-            ->start(new ProcessInstanceCreate($payload));
+            ->createProcessInstanceService($client, $this->createObjectSerializerMock($data, $payload))
+            ->start($data);
 
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/process-instances');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new ProcessInstance($expected), $actual);
     }
 
     public function testGetDiagram()
@@ -227,7 +230,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/identitylinks');
-        $this->assertEquals(new IdentityLinkList($expected), $actual);
     }
 
     public function testAddIdentityLink()
@@ -254,7 +256,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/identitylinks');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new IdentityLink($expected), $actual);
     }
 
     public function testRemoveIdentityLink()
@@ -300,7 +301,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables');
-        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testGetVariable()
@@ -322,7 +322,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables/' . $variableName);
-        $this->assertEquals(new Variable($expected), $actual);
     }
 
     public function testCreateVariables()
@@ -346,21 +345,18 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             ],
         ];
 
+        $data = [
+            new VariableCreate('intProcVar', 'integer', 123)
+        ];
+
         $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
-            ->createProcessInstanceService($client)
-            ->createVariables($processInstanceId, [
-                new VariableCreate([
-                    'name' => 'intProcVar',
-                    'type' => 'integer',
-                    'value' => 123,
-                ]),
-            ]);
+            ->createProcessInstanceService($client, $this->createObjectSerializerMock($data, $payload))
+            ->createVariables($processInstanceId, $data);
 
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testUpdateVariable()
@@ -381,15 +377,16 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             'value' => 123,
         ];
 
+        $data = new VariableUpdate('intProcVar', 'integer', 123);
+
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
-            ->createProcessInstanceService($client)
-            ->updateVariable($processInstanceId, $variableName, new VariableUpdate($payload));
+            ->createProcessInstanceService($client, $this->createObjectSerializerMock($data, $payload))
+            ->updateVariable($processInstanceId, $variableName, $data);
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables/' . $variableName);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Variable($expected), $actual);
     }
 
     public function testUpdateVariables()
@@ -413,21 +410,18 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
             ],
         ];
 
+        $data = [
+            new VariableUpdate('intProcVar', 'integer', 666)
+        ];
+
         $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
-            ->createProcessInstanceService($client)
-            ->updateVariables($processInstanceId, [
-                new VariableUpdate([
-                    'name' => 'intProcVar',
-                    'type' => 'integer',
-                    'value' => 666,
-                ]),
-            ]);
+            ->createProcessInstanceService($client, $this->createObjectSerializerMock($data, $payload))
+            ->updateVariables($processInstanceId, $data);
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testCreateBinaryVariable()
@@ -455,7 +449,6 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables');
         $this->assertRequestContentType('multipart/form-data');
-        $this->assertEquals(new BinaryVariable($expected), $actual);
     }
 
     public function testUpdateBinaryVariable()
@@ -483,11 +476,15 @@ class ProcessInstanceServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/process-instances/' . $processInstanceId . '/variables');
         $this->assertRequestContentType('multipart/form-data');
-        $this->assertEquals(new BinaryVariable($expected), $actual);
     }
 
-    private function createProcessInstanceService(ClientInterface $client)
+    private function createProcessInstanceService(ClientInterface $client, ObjectSerializerInterface $objectSerializer = null)
     {
-        return new ProcessInstanceService($client);
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        if ($objectSerializer === null) {
+            $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+        }
+
+        return new ProcessInstanceService($client, $modelFactory, $objectSerializer);
     }
 }

@@ -54,7 +54,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
             $uri = uri_template('runtime/tasks/{taskId}', ['taskId' => $taskId]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data),
             ]);
         }, Task::class);
     }
@@ -183,7 +183,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
             ]);
 
             return $client->request('POST', $uri, [
-                'json' => $variables,
+                'json' => $this->serializer->serialize($variables),
             ]);
         }, VariableList::class);
     }

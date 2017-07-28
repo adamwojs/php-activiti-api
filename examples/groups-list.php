@@ -2,8 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Activiti\Client\Service\GroupService;
 use Activiti\Client\Model\Group\GroupQuery;
+use Activiti\Client\Model\ModelFactory;
+use Activiti\Client\Service\ObjectSerializer;
+use Activiti\Client\Service\ServiceFactory;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -13,16 +15,17 @@ $client = new Client([
     ],
 ]);
 
-$service = new GroupService($client);
+$serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
+$service = $serviceFactory->createGroupService();
 
 $query = new GroupQuery();
-$query->size = 10;
+$query->setSize(10);
 
 do {
     $groups = $service->getGroupList($query);
-    foreach ($groups->data as $i => $group) {
-        printf("%s (%s)\n", $group->name, $group->type);
+    foreach ($groups as $i => $group) {
+        printf("%s (%s)\n", $group->getName(), $group->getType());
     }
 
-    $query->start += $query->size;
-} while ($groups->total > $query->start);
+    $query->setStart($query->getStart() + 10);
+} while ($groups->total > $query->getStart());

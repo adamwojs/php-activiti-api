@@ -2,6 +2,7 @@
 
 namespace Activiti\Tests\Client\Service;
 
+use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Tests\RequestAssertTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -22,6 +23,32 @@ abstract class AbstractServiceTest extends TestCase
      */
     private $history;
 
+    /**
+     * @param ResponseInterface[] $responses
+     * @return ClientInterface
+     */
+    protected function createClient(ResponseInterface ...$responses)
+    {
+        $this->history = [];
+
+        $stack = HandlerStack::create(new MockHandler($responses));
+        $stack->push(Middleware::history($this->history));
+
+        return new Client(['handler' => $stack]);
+    }
+
+    protected function createObjectSerializerMock($argument, array $return)
+    {
+        $mock = $this->createMock(ObjectSerializerInterface::class);
+        $mock
+            ->expects($this->once())
+            ->method('serialize')
+            ->with($argument)
+            ->willReturn($return);
+
+        return $mock;
+    }
+
     protected function createJsonResponse($data, $statusCode = 200)
     {
         return new Response($statusCode, [
@@ -35,20 +62,6 @@ abstract class AbstractServiceTest extends TestCase
             'statusCode' => $statusCode,
             'message' => $message,
         ], $statusCode);
-    }
-
-    /**
-     * @param ResponseInterface[] $responses
-     * @return ClientInterface
-     */
-    protected function createClient(ResponseInterface ...$responses)
-    {
-        $this->history = [];
-
-        $stack = HandlerStack::create(new MockHandler($responses));
-        $stack->push(Middleware::history($this->history));
-
-        return new Client(['handler' => $stack]);
     }
 
     /**

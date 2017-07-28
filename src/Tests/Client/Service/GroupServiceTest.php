@@ -2,13 +2,10 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\Model\Group\Group;
-use Activiti\Client\Model\Group\GroupCreate;
-use Activiti\Client\Model\Group\GroupList;
-use Activiti\Client\Model\Group\GroupMember;
 use Activiti\Client\Model\Group\GroupQuery;
-use Activiti\Client\Model\Group\GroupUpdate;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Service\GroupService;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
@@ -33,12 +30,11 @@ class GroupServiceTest extends AbstractServiceTest
         $this->assertCount(1, $this->getHistory());
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('identity/groups/' . $groupId);
-        $this->assertEquals(new Group($expected), $result);
     }
 
     public function testGetGroupList()
     {
-        $expectedUri = 'identity/groups?id=testgroup&name=Test%20name&type=Test%20type&nameLike=Test%25' .
+        $expectedUri = 'identity/groups?id=testgroup&name=Test%20name&type=Test%20type' .
             '&member=kermit&potentialStarter=kermit&sort=name';
 
         $expectedResult = [
@@ -57,78 +53,83 @@ class GroupServiceTest extends AbstractServiceTest
             'size' => 3,
         ];
 
-        $client = $this->createClient($this->createJsonResponse($expectedResult, 200));
+        $query = new GroupQuery();
+        $query->setId('testgroup');
+        $query->setType('Test type');
+        $query->setMember('kermit');
+        $query->setName('Test name');
+        $query->setPotentialStarter('kermit');
+        $query->setSort('name');
 
+        $client = $this->createClient($this->createJsonResponse($expectedResult, 200));
         $result = $this
-            ->createGroupService($client)
-            ->getGroupList(new GroupQuery([
+            ->createGroupService($client, $this->createObjectSerializerMock($query, [
                 'id' => 'testgroup',
                 'type' => 'Test type',
                 'member' => 'kermit',
                 'name' => 'Test name',
-                'nameLike' => 'Test%',
                 'potentialStarter' => 'kermit',
-                'sort' => 'name',
-            ]));
+                'sort' => 'name'
+            ]))
+            ->getGroupList($query);
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri($expectedUri);
-        $this->assertEquals(new GroupList($expectedResult), $result);
     }
 
     public function testCreateGroup()
     {
-        $expected = [
-            'id' => 'testgroup',
-            'url' => 'http://localhost:8182/identity/groups/testgroup',
-            'name' => 'Test group',
-            'type' => 'Test type',
-        ];
+        $groupId = 'testgroup';
+        $name = 'Test group';
+        $type = 'Test type';
 
-        $payload = [
-            'id' => 'testgroup',
-            'name' => 'Test group',
-            'type' => 'Test type',
+        $expected = [
+            'id' => $groupId,
+            'url' => 'http://localhost:8182/identity/groups/' . $groupId,
+            'name' => $name,
+            'type' => $type,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 201));
 
         $result = $this
             ->createGroupService($client)
-            ->createGroup(new GroupCreate($payload));
+            ->createGroup($groupId, $name, $type);
 
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('identity/groups');
-        $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Group($expected), $result);
+        $this->assertRequestJsonPayload([
+            'id' => $groupId,
+            'name' => $name,
+            'type' => $type,
+        ]);
     }
 
     public function testUpdateGroup()
     {
         $groupId = 'testgroup';
+        $name = 'Test group (changed)';
+        $type = 'Test type (changed)';
 
         $expected = [
             'id' => $groupId,
-            'url' => 'http://localhost:8182/identity/groups/testgroup',
-            'name' => 'Test group (changed)',
-            'type' => 'Test type (changed)',
-        ];
-
-        $payload = [
-            'name' => 'Test group (changed)',
-            'type' => 'Test type (changed)',
+            'url' => 'http://localhost:8182/identity/groups/' . $groupId,
+            'name' => $name,
+            'type' => $type,
         ];
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
 
         $result = $this
             ->createGroupService($client)
-            ->updateGroup($groupId, new GroupUpdate($payload));
+            ->updateGroup($groupId, $name, $type);
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('identity/groups/' . $groupId);
-        $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Group($expected), $result);
+        $this->assertRequestJsonPayload([
+            'name' => $name,
+            'type' => $type,
+        ]);
     }
 
     public function testDeleteGroup()
@@ -167,7 +168,6 @@ class GroupServiceTest extends AbstractServiceTest
         $this->assertRequestJsonPayload([
             'userId' => $userId,
         ]);
-        $this->assertEquals(new GroupMember($expected), $result);
     }
 
     public function testDeleteMember()
@@ -185,8 +185,13 @@ class GroupServiceTest extends AbstractServiceTest
         $this->assertNull($result);
     }
 
-    private function createGroupService(ClientInterface $client)
+    private function createGroupService(ClientInterface $client, ObjectSerializerInterface $objectSerializer = null)
     {
-        return new GroupService($client);
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        if ($objectSerializer === null) {
+            $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+        }
+
+        return new GroupService($client, $modelFactory, $objectSerializer);
     }
 }

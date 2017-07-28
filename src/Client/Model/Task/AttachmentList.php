@@ -11,10 +11,7 @@ class AttachmentList implements \IteratorAggregate
 
     public function __construct(array $attachments = [])
     {
-        $this->attachments = [];
-        foreach ($attachments as $attachment) {
-            $this->attachments[] = new Attachment($attachment);
-        }
+        $this->attachments = $attachments;
     }
 
     /**

@@ -11,10 +11,7 @@ class VariableList implements \IteratorAggregate
 
     public function __construct(array $items = [])
     {
-        $this->items = [];
-        foreach ($items as $item) {
-            $this->items[] = new Variable($item);
-        }
+        $this->items = $items;
     }
 
     /**

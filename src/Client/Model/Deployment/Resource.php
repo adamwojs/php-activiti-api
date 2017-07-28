@@ -2,13 +2,40 @@
 
 namespace Activiti\Client\Model\Deployment;
 
-use Activiti\Client\Model\ValueObject;
-
-class Resource extends ValueObject
+class Resource
 {
-    public $id;
-    public $url;
-    public $contentUrl;
-    public $mediaType;
-    public $type;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getId()
+    {
+        return $this->data['id'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
+
+    public function getContentUrl()
+    {
+        return $this->data['contentUrl'];
+    }
+
+    public function getMediaType()
+    {
+        return $this->data['mediaType'];
+    }
+
+    public function getType()
+    {
+        return $this->data['type'];
+    }
 }

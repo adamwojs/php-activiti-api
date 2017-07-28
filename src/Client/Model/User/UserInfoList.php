@@ -7,14 +7,11 @@ class UserInfoList implements \ArrayAccess
     /**
      * @var array
      */
-    private $items;
+    private $userInfos;
 
-    public function __construct(array $items)
+    public function __construct(array $userInfos)
     {
-        $this->items = [];
-        foreach ($items as $item) {
-            $this->items[] = new UserInfo($item);
-        }
+        $this->userInfos = $userInfos;
     }
 
     /**
@@ -22,7 +19,7 @@ class UserInfoList implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->items[$offset]);
+        return isset($this->userInfos[$offset]);
     }
 
     /**
@@ -30,7 +27,7 @@ class UserInfoList implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return isset($this->items[$offset]) ? $this->items[$offset] : null;
+        return isset($this->userInfos[$offset]) ? $this->userInfos[$offset] : null;
     }
 
     /**

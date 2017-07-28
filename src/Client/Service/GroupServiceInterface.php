@@ -3,11 +3,9 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\Group\Group;
-use Activiti\Client\Model\Group\GroupCreate;
 use Activiti\Client\Model\Group\GroupList;
 use Activiti\Client\Model\Group\GroupMember;
 use Activiti\Client\Model\Group\GroupQuery;
-use Activiti\Client\Model\Group\GroupUpdate;
 
 interface GroupServiceInterface
 {
@@ -36,10 +34,12 @@ interface GroupServiceInterface
      *
      * @see https://www.activiti.org/userguide/#_create_a_group
      *
-     * @param GroupCreate $data
+     * @param string $groupId
+     * @param string $name
+     * @param string $type
      * @return Group
      */
-    public function createGroup(GroupCreate $data);
+    public function createGroup($groupId, $name, $type);
 
     /**
      * Update a group.
@@ -47,10 +47,11 @@ interface GroupServiceInterface
      * @see https://www.activiti.org/userguide/#_update_a_group
      *
      * @param string $groupId The id of the group to update
-     * @param GroupUpdate $data
+     * @param string $name
+     * @param string $type
      * @return Group
      */
-    public function updateGroup($groupId, GroupUpdate $data);
+    public function updateGroup($groupId, $name, $type);
 
     /**
      * Delete a group.

@@ -2,11 +2,30 @@
 
 namespace Activiti\Client\Model\User;
 
-use Activiti\Client\Model\ValueObject;
-
-class UserInfo extends ValueObject
+class UserInfo
 {
-    public $key;
-    public $value;
-    public $url;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getKey()
+    {
+        return $this->data['key'];
+    }
+
+    public function getValue()
+    {
+        return $this->data['value'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
 }

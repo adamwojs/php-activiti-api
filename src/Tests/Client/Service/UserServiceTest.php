@@ -2,13 +2,11 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\Model\User\User;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Model\User\UserCreate;
-use Activiti\Client\Model\User\UserInfo;
-use Activiti\Client\Model\User\UserInfoList;
-use Activiti\Client\Model\User\UserList;
 use Activiti\Client\Model\User\UserQuery;
 use Activiti\Client\Model\User\UserUpdate;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\UserService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -34,12 +32,6 @@ class UserServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('identity/users/' . $userId);
-        $this->assertEquals(new User($expected), $actual);
-    }
-
-    private function createUserService(ClientInterface $client)
-    {
-        return new UserService($client);
     }
 
     public function testGetUserList()
@@ -72,7 +64,6 @@ class UserServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('identity/users');
-        $this->assertEquals(new UserList($expectedResult), $actual);
     }
 
     public function testCreateUser()
@@ -93,15 +84,21 @@ class UserServiceTest extends AbstractServiceTest
             'password' => '123456',
         ];
 
+        $data = new UserCreate();
+        $data->setId('testuser');
+        $data->setFirstName('Fred');
+        $data->setLastName('McDonald');
+        $data->setEmail('no-reply@activiti.org');
+        $data->setPassword('123456');
+
         $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
-            ->createUserService($client)
-            ->createUser(new UserCreate($payload));
+            ->createUserService($client, $this->createObjectSerializerMock($data, $payload))
+            ->createUser($data);
 
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('identity/users');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new User($expected), $actual);
     }
 
     public function testUpdateUser()
@@ -123,15 +120,27 @@ class UserServiceTest extends AbstractServiceTest
             'password' => '123456',
         ];
 
+        $data = new UserUpdate();
+        $data->setFirstName('Fred');
+        $data->setLastName('McDonald');
+        $data->setEmail('no-reply@activiti.org');
+        $data->setPassword('123456');
+
+        $serializer = $this->createMock(ObjectSerializerInterface::class);
+        $serializer
+            ->expects($this->once())
+            ->method('serialize')
+            ->with($data)
+            ->willReturn($payload);
+
         $client = $this->createClient($this->createJsonResponse($expected, 200));
         $actual = $this
-            ->createUserService($client)
-            ->updateUser($userId, new UserUpdate($payload));
+            ->createUserService($client, $serializer)
+            ->updateUser($userId, $data);
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('identity/users/' . $userId);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new User($expected), $actual);
     }
 
     public function testDeleteUser()
@@ -197,7 +206,6 @@ class UserServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('identity/users/' . $userId . '/info/' . $key);
-        $this->assertEquals(new UserInfo($expected), $actual);
     }
 
     public function testGetUserInfoList()
@@ -222,7 +230,6 @@ class UserServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('identity/users/' . $userId . '/info');
-        $this->assertEquals(new UserInfoList($expected), $actual);
     }
 
     public function testCreateUserInfo()
@@ -250,7 +257,6 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('identity/users/' . $userId . '/info');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new UserInfo($expected), $actual);
     }
 
     public function testUpdateUserInfo()
@@ -277,7 +283,6 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('identity/users/' . $userId . '/info/' . $key);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new UserInfo($expected), $actual);
     }
 
     public function testDeleteUserInfo()
@@ -293,5 +298,15 @@ class UserServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('DELETE');
         $this->assertRequestUri('identity/users/' . $userId . '/info/' . $key);
         $this->assertNull($actual);
+    }
+
+    private function createUserService(ClientInterface $client, ObjectSerializerInterface $objectSerializer = null)
+    {
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        if ($objectSerializer === null) {
+            $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+        }
+
+        return new UserService($client, $modelFactory, $objectSerializer);
     }
 }

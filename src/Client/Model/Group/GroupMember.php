@@ -2,11 +2,30 @@
 
 namespace Activiti\Client\Model\Group;
 
-use Activiti\Client\Model\ValueObject;
-
-class GroupMember extends ValueObject
+class GroupMember
 {
-    public $userId;
-    public $groupId;
-    public $url;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getUserId()
+    {
+        return $this->data['userId'];
+    }
+
+    public function getGroupId()
+    {
+        return $this->data['groupId'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
 }

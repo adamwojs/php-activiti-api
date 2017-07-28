@@ -3,11 +3,9 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Model\Group\Group;
-use Activiti\Client\Model\Group\GroupCreate;
 use Activiti\Client\Model\Group\GroupList;
 use Activiti\Client\Model\Group\GroupMember;
 use Activiti\Client\Model\Group\GroupQuery;
-use Activiti\Client\Model\Group\GroupUpdate;
 use GuzzleHttp\ClientInterface;
 use function GuzzleHttp\uri_template;
 
@@ -34,7 +32,7 @@ class GroupService extends AbstractService implements GroupServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'identity/groups', [
-                'query' => (array)$query,
+                'query' => $this->serializer->serialize($query),
             ]);
         }, GroupList::class);
     }
@@ -42,11 +40,15 @@ class GroupService extends AbstractService implements GroupServiceInterface
     /**
      * @inheritdoc
      */
-    public function createGroup(GroupCreate $data)
+    public function createGroup($groupId, $name, $type)
     {
-        return $this->call(function (ClientInterface $client) use ($data) {
+        return $this->call(function (ClientInterface $client) use ($groupId, $name, $type) {
             return $client->request('POST', 'identity/groups', [
-                'json' => (array)$data,
+                'json' => [
+                    'id' => $groupId,
+                    'name' => $name,
+                    'type' => $type
+                ],
             ]);
         }, Group::class);
     }
@@ -54,15 +56,18 @@ class GroupService extends AbstractService implements GroupServiceInterface
     /**
      * @inheritdoc
      */
-    public function updateGroup($groupId, GroupUpdate $data)
+    public function updateGroup($groupId, $name, $type)
     {
-        return $this->call(function (ClientInterface $client) use ($groupId, $data) {
+        return $this->call(function (ClientInterface $client) use ($groupId, $name, $type) {
             $uri = uri_template('identity/groups/{groupId}', [
                 'groupId' => $groupId,
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data,
+                'json' => [
+                    'name' => $name,
+                    'type' => $type
+                ],
             ]);
         }, Group::class);
     }

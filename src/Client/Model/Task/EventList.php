@@ -11,10 +11,7 @@ class EventList implements \IteratorAggregate
 
     public function __construct(array $events = [])
     {
-        $this->events = [];
-        foreach ($events as $event) {
-            $this->events[] = new Event($event);
-        }
+        $this->events = $events;
     }
 
     /**

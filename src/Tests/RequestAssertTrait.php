@@ -2,8 +2,10 @@
 
 namespace Activiti\Tests;
 
+use GuzzleHttp\Psr7\Uri;
 use PHPUnit_Framework_Assert;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 trait RequestAssertTrait
 {
@@ -16,13 +18,23 @@ trait RequestAssertTrait
         PHPUnit_Framework_Assert::assertEquals($method, $request->getMethod());
     }
 
-    public function assertRequestUri($uri, RequestInterface $request = null)
+    public function assertRequestUri($expected, RequestInterface $request = null)
     {
         if ($request === null) {
             $request = $this->getLastRequest();
         }
 
-        PHPUnit_Framework_Assert::assertEquals($uri, (string)$request->getUri());
+        if (!($expected instanceof UriInterface)) {
+            $expected = new Uri($expected);
+        }
+
+        $requestQuery = [];
+        parse_str($request->getUri()->getQuery(), $requestQuery);
+        $expectedQuery = [];
+        parse_str($expected->getQuery(), $expectedQuery);
+
+        PHPUnit_Framework_Assert::assertEquals($expected->getPath(), $request->getUri()->getPath());
+        PHPUnit_Framework_Assert::assertEquals($expectedQuery, $requestQuery);
     }
 
     public function assertRequestJsonPayload($payload, RequestInterface $request = null)

@@ -4,23 +4,14 @@ namespace Activiti\Client\Model;
 
 abstract class AbstractList implements \IteratorAggregate
 {
-    public $data;
-    public $total;
-    public $start;
-    public $size;
-    public $sort;
-    public $order;
+    /**
+     * @var array
+     */
+    protected $data;
 
-    public function __construct(array $response = [])
+    public function __construct(array $data = [])
     {
-        $this->data = [];
-
-        $this->total = $response['total'];
-        $this->start = $response['start'];
-        $this->size = $response['size'];
-
-        $this->order = $response['order'];
-        $this->sort = $response['sort'];
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +19,31 @@ abstract class AbstractList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->data);
+        return new \ArrayIterator($this->data['data']);
+    }
+
+    public function getTotal()
+    {
+        return $this->data['total'];
+    }
+
+    public function getStart()
+    {
+        return $this->data['start'];
+    }
+
+    public function getSize()
+    {
+        return $this->data['size'];
+    }
+
+    public function getSort()
+    {
+        return $this->data['sort'];
+    }
+
+    public function getOrder()
+    {
+        return $this->data['order'];
     }
 }

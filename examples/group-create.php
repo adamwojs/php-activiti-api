@@ -4,7 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Activiti\Client\Model\ModelFactory;
 use Activiti\Client\Service\ObjectSerializer;
-use Activiti\Client\Service\ProcessDefinitionService;
+use Activiti\Client\Service\ServiceFactory;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -14,6 +14,8 @@ $client = new Client([
     ],
 ]);
 
-$service = new ProcessDefinitionService($client, new ModelFactory(), new ObjectSerializer());
+$group = (new ServiceFactory($client, new ModelFactory(), new ObjectSerializer()))
+    ->createGroupService()
+    ->createGroup('Group A', 'Type', 'group-a');
 
-dump($service->getResourceData($argv[1]));
+dump($group);

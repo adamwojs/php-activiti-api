@@ -5,7 +5,7 @@ namespace Activiti\Client\Service;
 use Activiti\Client\Model\BinaryVariable;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
-use Activiti\Client\Model\ProcessInstance\VariableUpdate;
+use Activiti\Client\Model\VariableUpdate;
 
 interface ProcessInstanceServiceInterface
 {

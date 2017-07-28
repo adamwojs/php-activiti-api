@@ -35,7 +35,7 @@ class UserService extends AbstractService implements UserServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'identity/users', [
-                'query' => (array)$query,
+                'query' => $this->serializer->serialize($query),
             ]);
         }, UserList::class);
     }
@@ -47,7 +47,7 @@ class UserService extends AbstractService implements UserServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($data) {
             return $client->request('POST', 'identity/users', [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data),
             ]);
         }, User::class);
     }
@@ -63,7 +63,7 @@ class UserService extends AbstractService implements UserServiceInterface
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data),
             ]);
         }, User::class);
     }

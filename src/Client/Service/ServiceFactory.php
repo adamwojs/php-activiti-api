@@ -2,6 +2,7 @@
 
 namespace Activiti\Client\Service;
 
+use Activiti\Client\Model\ModelFactoryInterface;
 use GuzzleHttp\ClientInterface;
 
 class ServiceFactory implements ServiceFactoryInterface
@@ -11,9 +12,21 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     private $client;
 
-    public function __construct(ClientInterface $client)
+    /**
+     * @var ModelFactoryInterface
+     */
+    private $modelFactory;
+
+    /**
+     * @var ObjectSerializerInterface
+     */
+    private $objectSerializer;
+
+    public function __construct(ClientInterface $client, ModelFactoryInterface $modelFactory, ObjectSerializerInterface $objectSerializer)
     {
         $this->client = $client;
+        $this->modelFactory = $modelFactory;
+        $this->objectSerializer = $objectSerializer;
     }
 
     /**
@@ -21,7 +34,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createDeploymentService()
     {
-        return new DeploymentService($this->client);
+        return new DeploymentService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -29,7 +42,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createGroupService()
     {
-        return new GroupService($this->client);
+        return new GroupService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -37,7 +50,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createManagementService()
     {
-        return new ManagementService($this->client);
+        return new ManagementService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -45,7 +58,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createProcessDefinitionService()
     {
-        return new ProcessDefinitionService($this->client);
+        return new ProcessDefinitionService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -53,7 +66,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createProcessInstanceService()
     {
-        return new ProcessInstanceService($this->client);
+        return new ProcessInstanceService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -61,7 +74,7 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createTaskService()
     {
-        return new TaskService($this->client);
+        return new TaskService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 
     /**
@@ -69,6 +82,6 @@ class ServiceFactory implements ServiceFactoryInterface
      */
     public function createUserService()
     {
-        return new UserService($this->client);
+        return new UserService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 }

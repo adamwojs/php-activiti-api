@@ -4,7 +4,9 @@ namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Service\ManagementService;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 
 class ManagementServiceTest extends AbstractServiceTest
@@ -26,7 +28,6 @@ class ManagementServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('management/engine');
-        $this->assertEquals(new Engine($expected), $result);
     }
 
     public function testGetProperties()
@@ -45,11 +46,13 @@ class ManagementServiceTest extends AbstractServiceTest
 
         $this->assertEquals('GET', $this->getLastRequest()->getMethod());
         $this->assertEquals('management/properties', (string)$this->getLastRequest()->getUri());
-        $this->assertEquals(new EngineProperties($expected), $result);
     }
 
     private function createManagementService(ClientInterface $client)
     {
-        return new ManagementService($client);
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+
+        return new ManagementService($client, $modelFactory, $objectSerializer);
     }
 }

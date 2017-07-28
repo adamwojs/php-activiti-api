@@ -2,13 +2,18 @@
 
 namespace Activiti\Tests\Client\Service;
 
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Service\DeploymentServiceInterface;
 use Activiti\Client\Service\GroupServiceInterface;
 use Activiti\Client\Service\ManagementServiceInterface;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\ProcessDefinitionServiceInterface;
 use Activiti\Client\Service\ProcessInstanceServiceInterface;
 use Activiti\Client\Service\ServiceFactory;
 use Activiti\Client\Service\TaskServiceInterface;
+use Activiti\Client\Service\UserServiceInterface;
+use Activiti\Client\Transformer\ResponseTransformerFactory;
+use Activiti\Client\Transformer\ResponseTransformerFactoryInterface;
 use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -68,8 +73,21 @@ class ServiceFactoryTest extends TestCase
         $this->assertInstanceOf(TaskServiceInterface::class, $actual);
     }
 
+    public function testCreateUserService()
+    {
+        $actual = $this
+            ->createServiceFactory()
+            ->createUserService();
+
+        $this->assertInstanceOf(UserServiceInterface::class, $actual);
+    }
+
     private function createServiceFactory()
     {
-        return new ServiceFactory($this->createMock(ClientInterface::class));
+        return new ServiceFactory(
+            $this->createMock(ClientInterface::class),
+            $this->createMock(ModelFactoryInterface::class),
+            $this->createMock(ObjectSerializerInterface::class)
+        );
     }
 }

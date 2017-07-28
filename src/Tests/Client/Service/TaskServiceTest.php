@@ -3,21 +3,11 @@
 namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Exception\ActivitiException;
-use Activiti\Client\Model\IdentityLink;
-use Activiti\Client\Model\IdentityLinkList;
-use Activiti\Client\Model\ProcessInstance\VariableCreate;
-use Activiti\Client\Model\Task\Attachment;
-use Activiti\Client\Model\Task\AttachmentList;
-use Activiti\Client\Model\Task\Comment;
-use Activiti\Client\Model\Task\CommentList;
-use Activiti\Client\Model\Task\Event;
-use Activiti\Client\Model\Task\EventList;
-use Activiti\Client\Model\Task\Task;
-use Activiti\Client\Model\Task\TaskList;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Model\Task\TaskQuery;
 use Activiti\Client\Model\Task\TaskUpdate;
-use Activiti\Client\Model\Variable;
-use Activiti\Client\Model\VariableList;
+use Activiti\Client\Model\VariableCreate;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\TaskService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -36,7 +26,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId);
-        $this->assertEquals(new Task($expected), $actual);
     }
 
     public function testGetTaskOnNonExistingTaskId()
@@ -74,7 +63,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks');
-        $this->assertEquals(new TaskList($expected), $actual);
     }
 
     public function testUpdateTask()
@@ -95,14 +83,24 @@ class TaskServiceTest extends AbstractServiceTest
         $expected = $this->getExampleTask();
 
         $client = $this->createClient($this->createJsonResponse($expected, 200));
+
+        $data = new TaskUpdate();
+        $data->setAssignee('assignee');
+        $data->setDelegationState('resolved');
+        $data->setDescription('New task description');
+        $data->setDueDate('2013-04-17T13:06:02.438+02:00');
+        $data->setName('New task name');
+        $data->setOwner('owner');
+        $data->setParentTaskId(3);
+        $data->setPriority(20);
+
         $actual = $this
-            ->createTaskService($client)
-            ->updateTask($taskId, new TaskUpdate($payload));
+            ->createTaskService($client, $this->createObjectSerializerMock($data, $payload))
+            ->updateTask($taskId, $data);
 
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/tasks/' . $taskId);
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Task($expected), $actual);
     }
 
     /**
@@ -128,7 +126,7 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('DELETE');
         $this->assertRequestUri('runtime/tasks/' . $taskId);
-        $this->assertnull($actual);
+        $this->assertNull($actual);
     }
 
     public function testDeleteTaskWithNonExistingTaskId()
@@ -254,7 +252,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/variables');
-        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testGetVariable()
@@ -277,7 +274,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/variables/' . $variableName);
-        $this->assertEquals(new Variable($expected), $actual);
     }
 
     public function testGetBinaryVariable()
@@ -319,21 +315,19 @@ class TaskServiceTest extends AbstractServiceTest
             ],
         ];
 
+        $variable = new VariableCreate();
+        $variable->setName('intProcVar');
+        $variable->setType('integer');
+        $variable->setValue(123);
+
         $client = $this->createClient($this->createJsonResponse($expected, 201));
         $actual = $this
-            ->createTaskService($client)
-            ->createVariables($taskId, [
-                new VariableCreate([
-                    'name' => 'intProcVar',
-                    'type' => 'integer',
-                    'value' => 123,
-                ]),
-            ]);
+            ->createTaskService($client, $this->createObjectSerializerMock([$variable], $payload))
+            ->createVariables($taskId, [$variable]);
 
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/variables');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new VariableList($expected), $actual);
     }
 
     public function testDeleteVariable()
@@ -392,7 +386,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks');
-        $this->assertEquals(new IdentityLinkList($expected), $actual);
     }
 
     public function testGetUsersIdentityLinks()
@@ -415,7 +408,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks/users');
-        $this->assertEquals(new IdentityLinkList($expected), $actual);
     }
 
     public function testGetGroupsIdentityLinks()
@@ -438,7 +430,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks/groups');
-        $this->assertEquals(new IdentityLinkList($expected), $actual);
     }
 
     public function testGetIdentityLink()
@@ -462,7 +453,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks/' . $family . '/' . $identityId . '/' . $type);
-        $this->assertEquals(new IdentityLink($expected), $actual);
     }
 
     public function testCreateIdentityLink()
@@ -492,7 +482,6 @@ class TaskServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new IdentityLink($expected), $actual);
     }
 
     public function testDeleteIdentityLink()
@@ -509,7 +498,7 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('DELETE');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/identitylinks/' . $family . '/' . $identityId . '/' . $type);
-        $this->assertnull($actual);
+        $this->assertNull($actual);
     }
 
     public function testCreateComment()
@@ -542,7 +531,6 @@ class TaskServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/comments');
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Comment($expected), $actual);
     }
 
     public function testGetComments()
@@ -569,7 +557,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/comments');
-        $this->assertEquals(new CommentList($expected), $actual);
     }
 
     public function testGetComment()
@@ -595,7 +582,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/comments/' . $commentId);
-        $this->assertEquals(new Comment($expected), $actual);
     }
 
     public function testDeleteComment()
@@ -639,7 +625,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/events');
-        $this->assertEquals(new EventList($expected), $actual);
     }
 
     public function testGetEvent()
@@ -667,7 +652,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/events/' . $eventId);
-        $this->assertEquals(new Event($expected), $actual);
     }
 
     public function testCreateAttachment()
@@ -705,7 +689,6 @@ class TaskServiceTest extends AbstractServiceTest
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/attachments');
         $this->assertRequestContentType('multipart/form-data');
         // TODO: Assert payload
-        $this->assertEquals(new Attachment($expected), $actual);
     }
 
     public function testGetAttachments()
@@ -744,7 +727,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/attachments');
-        $this->assertEquals(new AttachmentList($expected), $actual);
     }
 
     public function testGetAttachment()
@@ -771,7 +753,6 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/attachments/' . $attachmentId);
-        $this->assertEquals(new Attachment($expected), $actual);
     }
 
     public function testDeleteAttachment()
@@ -786,7 +767,7 @@ class TaskServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('DELETE');
         $this->assertRequestUri('runtime/tasks/' . $taskId . '/attachments/' . $attachmentId);
-        $this->assertnull($actual);
+        $this->assertNull($actual);
     }
 
     public function getUpdateFailureResponses()
@@ -816,9 +797,14 @@ class TaskServiceTest extends AbstractServiceTest
         ];
     }
 
-    private function createTaskService(ClientInterface $client)
+    private function createTaskService(ClientInterface $client, ObjectSerializerInterface $objectSerializer = null)
     {
-        return new TaskService($client);
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        if ($objectSerializer === null) {
+            $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+        }
+
+        return new TaskService($client, $modelFactory, $objectSerializer);
     }
 
     private function doTestTaskActionSuccess($action, array $args = [], array $payload = [])
@@ -835,7 +821,6 @@ class TaskServiceTest extends AbstractServiceTest
         $this->assertRequestMethod('PUT');
         $this->assertRequestUri('runtime/tasks/' . urlencode($taskId));
         $this->assertRequestJsonPayload($payload);
-        $this->assertEquals(new Task($expected), $actual);
     }
 
     private function doTestTaskActionFailure($action, Response $response, array $args)

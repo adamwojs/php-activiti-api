@@ -5,7 +5,9 @@ namespace Activiti\Tests\Client\Service;
 use Activiti\Client\Model\Deployment\Deployment;
 use Activiti\Client\Model\Deployment\DeploymentList;
 use Activiti\Client\Model\Deployment\DeploymentQuery;
+use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Service\DeploymentService;
+use Activiti\Client\Service\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
@@ -15,15 +17,15 @@ class DeploymentServiceTest extends AbstractServiceTest
     {
         $expected = [
             'data' => [
-                    [
-                        'id' => '10',
-                        'name' => 'activiti-examples.bar',
-                        'deploymentTime' => '2010-10-13T14:54:26.750+02:00',
-                        'category' => 'examples',
-                        'url' => 'http://localhost:8081/service/repository/deployments/10',
-                        'tenantId' => null,
-                    ],
+                [
+                    'id' => '10',
+                    'name' => 'activiti-examples.bar',
+                    'deploymentTime' => '2010-10-13T14:54:26.750+02:00',
+                    'category' => 'examples',
+                    'url' => 'http://localhost:8081/service/repository/deployments/10',
+                    'tenantId' => null,
                 ],
+            ],
             'total' => 1,
             'start' => 0,
             'sort' => 'id',
@@ -40,7 +42,6 @@ class DeploymentServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('repository/deployments');
-        $this->assertEquals(new DeploymentList($expected), $actual);
     }
 
     public function testGetDeployment()
@@ -64,7 +65,6 @@ class DeploymentServiceTest extends AbstractServiceTest
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('repository/deployments/' . $deploymentId);
-        $this->assertEquals(new Deployment($expected), $actual);
     }
 
     public function testCreateDeployment()
@@ -109,6 +109,9 @@ class DeploymentServiceTest extends AbstractServiceTest
 
     private function createDeploymentService(ClientInterface $client)
     {
-        return new DeploymentService($client);
+        $modelFactory = $this->createMock(ModelFactoryInterface::class);
+        $objectSerializer = $this->createMock(ObjectSerializerInterface::class);
+
+        return new DeploymentService($client, $modelFactory, $objectSerializer);
     }
 }

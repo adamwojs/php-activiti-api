@@ -2,10 +2,28 @@
 
 namespace Activiti\Client\Model\Group;
 
-use Activiti\Client\Model\ValueObject;
-
-class GroupUpdate extends ValueObject
+class GroupUpdate
 {
-    public $name;
-    public $type;
+    private $name;
+    private $type;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 }

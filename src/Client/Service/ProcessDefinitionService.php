@@ -50,7 +50,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data)
             ]);
         }, ProcessDefinition::class);
     }

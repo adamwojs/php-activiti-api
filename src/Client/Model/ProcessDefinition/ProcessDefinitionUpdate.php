@@ -2,9 +2,17 @@
 
 namespace Activiti\Client\Model\ProcessDefinition;
 
-use Activiti\Client\Model\ValueObject;
-
-class ProcessDefinitionUpdate extends ValueObject
+class ProcessDefinitionUpdate
 {
-    public $category;
+    private $category;
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
 }

@@ -11,10 +11,7 @@ class IdentityLinkList implements \IteratorAggregate
 
     public function __construct(array $items = [])
     {
-        $this->items = [];
-        foreach ($items as $item) {
-            $this->items[] = new IdentityLink($item);
-        }
+        $this->items = $items;
     }
 
     /**

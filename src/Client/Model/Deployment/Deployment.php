@@ -2,14 +2,45 @@
 
 namespace Activiti\Client\Model\Deployment;
 
-use Activiti\Client\Model\ValueObject;
-
-class Deployment extends ValueObject
+class Deployment
 {
-    public $id;
-    public $name;
-    public $deploymentTime;
-    public $category;
-    public $url;
-    public $tenantId;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getId()
+    {
+        return $this->data['id'];
+    }
+
+    public function getName()
+    {
+        return $this->data['name'];
+    }
+
+    public function getDeploymentTime()
+    {
+        return $this->data['deploymentTime'];
+    }
+
+    public function getCategory()
+    {
+        return $this->data['category'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
+
+    public function getTenantId()
+    {
+        return $this->data['tenantId'];
+    }
 }

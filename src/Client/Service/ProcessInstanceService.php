@@ -2,15 +2,15 @@
 
 namespace Activiti\Client\Service;
 
-use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\BinaryVariable;
-use Activiti\Client\Model\ProcessInstance\ProcessInstance;
-use Activiti\Client\Model\ProcessInstance\ProcessInstanceList;
-use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
-use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
-use Activiti\Client\Model\Variable;
-use Activiti\Client\Model\ProcessInstance\VariableUpdate;
 use Activiti\Client\Model\IdentityLink;
+use Activiti\Client\Model\IdentityLinkList;
+use Activiti\Client\Model\ProcessInstance\ProcessInstance;
+use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
+use Activiti\Client\Model\ProcessInstance\ProcessInstanceList;
+use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
+use Activiti\Client\Model\VariableUpdate;
+use Activiti\Client\Model\Variable;
 use Activiti\Client\Model\VariableList;
 use GuzzleHttp\ClientInterface;
 use function GuzzleHttp\uri_template;
@@ -38,7 +38,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'runtime/process-instances', [
-                'query' => (array)$query,
+                'query' => $this->serializer->serialize($query),
             ]);
         }, ProcessInstanceList::class);
     }
@@ -100,7 +100,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
     {
         return $this->call(function (ClientInterface $client) use ($data) {
             return $client->request('POST', 'runtime/process-instances', [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data),
             ]);
         }, ProcessInstance::class);
     }
@@ -208,7 +208,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
             ]);
 
             return $client->request('POST', $uri, [
-                'json' => $variables,
+                'json' => $this->serializer->serialize($variables),
             ]);
         }, VariableList::class);
     }
@@ -224,7 +224,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => $variables,
+                'json' => $this->serializer->serialize($variables),
             ]);
         }, VariableList::class);
     }
@@ -241,7 +241,7 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
             ]);
 
             return $client->request('PUT', $uri, [
-                'json' => (array)$data,
+                'json' => $this->serializer->serialize($data),
             ]);
         }, Variable::class);
     }
@@ -261,13 +261,13 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                     [
                         'name' => 'variable',
                         'contents' => http_build_query([
-                            'name' => $binaryVariable->name,
-                            'type' => $binaryVariable->type,
+                            'name' => $binaryVariable->getName(),
+                            'type' => $binaryVariable->getType(),
                         ]),
                     ],
                     [
                         'name' => 'contents',
-                        'contents' => $binaryVariable->file,
+                        'contents' => $binaryVariable->getFile(),
                     ],
                 ],
             ]);
@@ -289,13 +289,13 @@ class ProcessInstanceService extends AbstractService implements ProcessInstanceS
                     [
                         'name' => 'variable',
                         'contents' => http_build_query([
-                            'name' => $binaryVariable->name,
-                            'type' => $binaryVariable->type,
+                            'name' => $binaryVariable->getName(),
+                            'type' => $binaryVariable->getType(),
                         ]),
                     ],
                     [
                         'name' => 'contents',
-                        'contents' => $binaryVariable->file,
+                        'contents' => $binaryVariable->getFile(),
                     ],
                 ],
             ]);

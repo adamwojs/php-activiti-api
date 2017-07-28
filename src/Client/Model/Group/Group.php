@@ -2,12 +2,35 @@
 
 namespace Activiti\Client\Model\Group;
 
-use Activiti\Client\Model\ValueObject;
-
-class Group extends ValueObject
+class Group
 {
-    public $id;
-    public $url;
-    public $name;
-    public $type;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getId()
+    {
+        return $this->data['id'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
+
+    public function getName()
+    {
+        return $this->data['name'];
+    }
+
+    public function getType()
+    {
+        return $this->data['type'];
+    }
 }

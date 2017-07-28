@@ -2,16 +2,55 @@
 
 namespace Activiti\Client\Model\Task;
 
-use Activiti\Client\Model\ValueObject;
-
-class Event extends ValueObject
+class Event
 {
-    public $id;
-    public $url;
-    public $action;
-    public $userId;
-    public $time;
-    public $taskUrl;
-    public $processInstanceUrl;
-    public $message;
+    /**
+     * @var array
+     */
+    private $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getId()
+    {
+        return $this->data['id'];
+    }
+
+    public function getUrl()
+    {
+        return $this->data['url'];
+    }
+
+    public function getAction()
+    {
+        return $this->data['action'];
+    }
+
+    public function getUserId()
+    {
+        return $this->data['userId'];
+    }
+
+    public function getTime()
+    {
+        return $this->data['time'];
+    }
+
+    public function getTaskUrl()
+    {
+        return $this->data['taskUrl'];
+    }
+
+    public function getProcessInstanceUrl()
+    {
+        return $this->data['processInstanceUrl'];
+    }
+
+    public function getMessage()
+    {
+        return $this->data['message'];
+    }
 }

@@ -11,10 +11,7 @@ class CommentList implements \IteratorAggregate
 
     public function __construct(array $comments = [])
     {
-        $this->comments = [];
-        foreach ($comments as $comment) {
-            $this->comments[] = new Comment($comment);
-        }
+        $this->comments = $comments;
     }
 
     /**

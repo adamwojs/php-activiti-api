@@ -2,8 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Activiti\Client\Model\ModelFactory;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionUpdate;
-use Activiti\Client\Service\ProcessDefinitionService;
+use Activiti\Client\Service\ObjectSerializer;
+use Activiti\Client\Service\ServiceFactory;
 use GuzzleHttp\Client;
 
 $id = $argv[1];
@@ -16,7 +18,8 @@ $client = new Client([
     ],
 ]);
 
-$service = new ProcessDefinitionService($client);
+$serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
+$service = $serviceFactory->createProcessDefinitionService();
 
 dump($service->update($id, new ProcessDefinitionUpdate([
     'category' => $category,

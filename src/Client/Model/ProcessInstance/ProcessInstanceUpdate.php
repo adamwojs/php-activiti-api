@@ -2,9 +2,17 @@
 
 namespace Activiti\Client\Model\ProcessInstance;
 
-use Activiti\Client\Model\ValueObject;
-
-class ProcessInstanceUpdate extends ValueObject
+class ProcessInstanceUpdate
 {
-    public $action;
+    private $action;
+
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    public function setAction($action)
+    {
+        $this->action = $action;
+    }
 }

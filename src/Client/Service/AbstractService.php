@@ -3,6 +3,7 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Exception\ActivitiException;
+use Activiti\Client\Model\ModelFactoryInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
@@ -15,26 +16,66 @@ abstract class AbstractService
      */
     private $client;
 
-    public function __construct(ClientInterface $client)
+    /**
+     * @var ModelFactoryInterface
+     */
+    private $modelFactory;
+
+    /**
+     * @var ObjectSerializerInterface
+     */
+    protected $serializer;
+
+    public function __construct(ClientInterface $client, ModelFactoryInterface $modelFactory, ObjectSerializerInterface $objectSerializer)
     {
         $this->client = $client;
+        $this->modelFactory = $modelFactory;
+        $this->serializer = $objectSerializer;
     }
 
-    protected function call(callable $callable, $responseClass = null)
+    protected function call(callable $callable, $class = null)
     {
         try {
             /** @var ResponseInterface $response */
             $response = $callable($this->client);
 
-            if ($responseClass !== null) {
-                return new $responseClass(json_decode(
-                    $response->getBody()->getContents(), true
-                ));
+            $contents = $response->getBody()->getContents();
+            if ($class !== null) {
+                return $this->hydrate($class, $this->decode($contents));
             }
 
-            return $response->getBody()->getContents();
+            return $contents;
         } catch (RequestException $ex) {
             throw new ActivitiException($ex->getMessage(), 0, $ex);
         }
+    }
+
+    /**
+     * Decode API response
+     *
+     * @param string $contents
+     * @return array
+     */
+    protected function decode($contents)
+    {
+        return json_decode($contents, true);
+    }
+
+    /**
+     * Hydrate response
+     *
+     * @param string $class
+     * @param array $data
+     * @return object
+     */
+    protected function hydrate($class, array $data)
+    {
+        return $this->modelFactory->{'create' . $this->getClassShortName($class)}($data);
+    }
+
+    private function getClassShortName($class)
+    {
+        $parts = explode('\\', $class);
+        return array_pop($parts);
     }
 }
