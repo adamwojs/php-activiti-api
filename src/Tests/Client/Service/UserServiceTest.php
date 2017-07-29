@@ -2,11 +2,11 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use Activiti\Client\Model\User\UserCreate;
 use Activiti\Client\Model\User\UserQuery;
 use Activiti\Client\Model\User\UserUpdate;
-use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\UserService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;

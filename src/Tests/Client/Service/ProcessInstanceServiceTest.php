@@ -2,13 +2,13 @@
 
 namespace Activiti\Tests\Client\Service;
 
+use Activiti\Client\ObjectSerializerInterface;
+use Activiti\Client\ModelFactoryInterface;
 use Activiti\Client\Model\BinaryVariable;
-use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceCreate;
 use Activiti\Client\Model\ProcessInstance\ProcessInstanceQuery;
 use Activiti\Client\Model\VariableCreate;
 use Activiti\Client\Model\VariableUpdate;
-use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\ProcessInstanceService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;

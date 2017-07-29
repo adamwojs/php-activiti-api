@@ -3,11 +3,11 @@
 namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Exception\ActivitiException;
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use Activiti\Client\Model\Task\TaskQuery;
 use Activiti\Client\Model\Task\TaskUpdate;
 use Activiti\Client\Model\VariableCreate;
-use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\TaskService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;

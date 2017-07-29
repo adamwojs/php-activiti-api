@@ -2,11 +2,10 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionQuery;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionUpdate;
-use Activiti\Client\Service\ObjectSerializer;
-use Activiti\Client\Service\ObjectSerializerInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use Activiti\Client\Service\ProcessDefinitionService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;

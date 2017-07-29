@@ -1,19 +1,17 @@
 <?php
 
-namespace Activiti\Tests\Client\Service;
+namespace Activiti\Tests\Client;
 
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
+use Activiti\Client\ObjectSerializerInterface;
+use Activiti\Client\ServiceFactory;
 use Activiti\Client\Service\DeploymentServiceInterface;
 use Activiti\Client\Service\GroupServiceInterface;
 use Activiti\Client\Service\ManagementServiceInterface;
-use Activiti\Client\Service\ObjectSerializerInterface;
 use Activiti\Client\Service\ProcessDefinitionServiceInterface;
 use Activiti\Client\Service\ProcessInstanceServiceInterface;
-use Activiti\Client\Service\ServiceFactory;
 use Activiti\Client\Service\TaskServiceInterface;
 use Activiti\Client\Service\UserServiceInterface;
-use Activiti\Client\Transformer\ResponseTransformerFactory;
-use Activiti\Client\Transformer\ResponseTransformerFactoryInterface;
 use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\TestCase;
 

@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Activiti\Client\Model\ModelFactory;
-use Activiti\Client\Service\ManagementService;
-use Activiti\Client\Service\ObjectSerializer;
+use Activiti\Client\ModelFactory;
+use Activiti\Client\ObjectSerializer;
+use Activiti\Client\ServiceFactory;
 use GuzzleHttp\Client;
 
 $client = new Client([
@@ -14,6 +14,7 @@ $client = new Client([
     ],
 ]);
 
-$managment = new ManagementService($client, new ModelFactory(), new ObjectSerializer());
+$serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
+$managment = $serviceFactory->createManagementService();
 dump($managment->getEngine());
 dump($managment->getProperties());

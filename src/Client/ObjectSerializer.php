@@ -1,6 +1,6 @@
 <?php
 
-namespace Activiti\Client\Service;
+namespace Activiti\Client;
 
 use Iterator;
 

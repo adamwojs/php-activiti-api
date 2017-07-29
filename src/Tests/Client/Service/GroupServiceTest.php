@@ -2,10 +2,10 @@
 
 namespace Activiti\Tests\Client\Service;
 
+use Activiti\Client\ModelFactoryInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use Activiti\Client\Model\Group\GroupQuery;
-use Activiti\Client\Model\ModelFactoryInterface;
 use Activiti\Client\Service\GroupService;
-use Activiti\Client\Service\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 

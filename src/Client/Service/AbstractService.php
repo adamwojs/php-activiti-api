@@ -3,7 +3,8 @@
 namespace Activiti\Client\Service;
 
 use Activiti\Client\Exception\ActivitiException;
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;

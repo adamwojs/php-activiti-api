@@ -1,8 +1,14 @@
 <?php
 
-namespace Activiti\Client\Service;
+namespace Activiti\Client;
 
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\Service\DeploymentService;
+use Activiti\Client\Service\GroupService;
+use Activiti\Client\Service\ManagementService;
+use Activiti\Client\Service\ProcessDefinitionService;
+use Activiti\Client\Service\ProcessInstanceService;
+use Activiti\Client\Service\TaskService;
+use Activiti\Client\Service\UserService;
 use GuzzleHttp\ClientInterface;
 
 class ServiceFactory implements ServiceFactoryInterface

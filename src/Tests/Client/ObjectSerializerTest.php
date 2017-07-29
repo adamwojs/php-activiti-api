@@ -1,8 +1,8 @@
 <?php
 
-namespace Activiti\Tests\Client\Service;
+namespace Activiti\Tests\Client;
 
-use Activiti\Client\Service\ObjectSerializer;
+use Activiti\Client\ObjectSerializer;
 use Activiti\Tests\Bar;
 use Activiti\Tests\Foo;
 use PHPUnit\Framework\TestCase;

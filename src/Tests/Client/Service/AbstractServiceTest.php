@@ -2,7 +2,7 @@
 
 namespace Activiti\Tests\Client\Service;
 
-use Activiti\Client\Service\ObjectSerializerInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use Activiti\Tests\RequestAssertTrait;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;

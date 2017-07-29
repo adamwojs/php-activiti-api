@@ -5,9 +5,9 @@ namespace Activiti\Tests\Client\Service;
 use Activiti\Client\Model\Deployment\Deployment;
 use Activiti\Client\Model\Deployment\DeploymentList;
 use Activiti\Client\Model\Deployment\DeploymentQuery;
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
 use Activiti\Client\Service\DeploymentService;
-use Activiti\Client\Service\ObjectSerializerInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
@@ -37,8 +37,7 @@ class DeploymentServiceTest extends AbstractServiceTest
 
         $actual = $this
             ->createDeploymentService($client)
-            ->getDeploymentList(new DeploymentQuery([
-            ]));
+            ->getDeploymentList(new DeploymentQuery());
 
         $this->assertRequestMethod('GET');
         $this->assertRequestUri('repository/deployments');

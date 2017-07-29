@@ -1,6 +1,14 @@
 <?php
 
-namespace Activiti\Client\Service;
+namespace Activiti\Client;
+
+use Activiti\Client\Service\DeploymentServiceInterface;
+use Activiti\Client\Service\GroupServiceInterface;
+use Activiti\Client\Service\ManagementServiceInterface;
+use Activiti\Client\Service\ProcessDefinitionServiceInterface;
+use Activiti\Client\Service\ProcessInstanceServiceInterface;
+use Activiti\Client\Service\TaskServiceInterface;
+use Activiti\Client\Service\UserServiceInterface;
 
 interface ServiceFactoryInterface
 {

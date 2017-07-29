@@ -4,9 +4,9 @@ namespace Activiti\Tests\Client\Service;
 
 use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
-use Activiti\Client\Model\ModelFactoryInterface;
+use Activiti\Client\ModelFactoryInterface;
 use Activiti\Client\Service\ManagementService;
-use Activiti\Client\Service\ObjectSerializerInterface;
+use Activiti\Client\ObjectSerializerInterface;
 use GuzzleHttp\ClientInterface;
 
 class ManagementServiceTest extends AbstractServiceTest

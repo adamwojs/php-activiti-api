@@ -2,10 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Activiti\Client\Model\ModelFactory;
+use Activiti\Client\ModelFactory;
+use Activiti\Client\ObjectSerializer;
+use Activiti\Client\ServiceFactory;
 use Activiti\Client\Model\User\UserQuery;
-use Activiti\Client\Service\ObjectSerializer;
-use Activiti\Client\Service\ServiceFactory;
 use GuzzleHttp\Client;
 
 $client = new Client([

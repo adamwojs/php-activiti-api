@@ -1,6 +1,6 @@
 <?php
 
-namespace Activiti\Client\Model;
+namespace Activiti\Client;
 
 interface ModelFactoryInterface
 {

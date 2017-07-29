@@ -1,6 +1,6 @@
 <?php
 
-namespace Activiti\Tests\Client\Model;
+namespace Activiti\Tests\Client;
 
 use Activiti\Client\Model\Deployment\Deployment;
 use Activiti\Client\Model\Deployment\DeploymentList;
@@ -12,7 +12,6 @@ use Activiti\Client\Model\IdentityLink;
 use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
-use Activiti\Client\Model\ModelFactory;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinition;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinitionList;
 use Activiti\Client\Model\ProcessInstance\ProcessInstance;
@@ -31,6 +30,7 @@ use Activiti\Client\Model\User\UserInfoList;
 use Activiti\Client\Model\User\UserList;
 use Activiti\Client\Model\Variable;
 use Activiti\Client\Model\VariableList;
+use Activiti\Client\ModelFactory;
 use PHPUnit\Framework\TestCase;
 
 class ModelFactoryTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Activiti\Client\Model;
+namespace Activiti\Client;
 
 use Activiti\Client\Model\Deployment\Deployment;
 use Activiti\Client\Model\Deployment\DeploymentList;
@@ -8,6 +8,8 @@ use Activiti\Client\Model\Deployment\Resource;
 use Activiti\Client\Model\Group\Group;
 use Activiti\Client\Model\Group\GroupList;
 use Activiti\Client\Model\Group\GroupMember;
+use Activiti\Client\Model\IdentityLink;
+use Activiti\Client\Model\IdentityLinkList;
 use Activiti\Client\Model\Management\Engine;
 use Activiti\Client\Model\Management\EngineProperties;
 use Activiti\Client\Model\ProcessDefinition\ProcessDefinition;
@@ -26,6 +28,8 @@ use Activiti\Client\Model\User\User;
 use Activiti\Client\Model\User\UserInfo;
 use Activiti\Client\Model\User\UserInfoList;
 use Activiti\Client\Model\User\UserList;
+use Activiti\Client\Model\Variable;
+use Activiti\Client\Model\VariableList;
 
 class ModelFactory implements ModelFactoryInterface
 {
