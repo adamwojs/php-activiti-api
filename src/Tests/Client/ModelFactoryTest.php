@@ -58,7 +58,7 @@ class ModelFactoryTest extends TestCase
 
     public function testCreateAttachmentList()
     {
-        $data = $this->getExampleCommentListData($this->getExampleAttachmentData());
+        $data = $this->getExampleAttachmentListData();
 
         $actual = $this
             ->createModelFactory()
@@ -546,10 +546,10 @@ class ModelFactoryTest extends TestCase
         ];
     }
 
-    private function getExampleAttachmentData()
+    private function getExampleAttachmentData($id = 1)
     {
         return [
-            'id' => 1,
+            'id' => $id,
             'userId' => 'kermit',
             'url' => 'http://localhost:8182/runtime/tasks/1/attachments',
             'name' => 'Simple attachment',
@@ -559,6 +559,15 @@ class ModelFactoryTest extends TestCase
             'processInstanceUrl' => null,
             'externalUrl' => 'http://activiti.org',
             'contentUrl' => null,
+        ];
+    }
+
+    private function getExampleAttachmentListData()
+    {
+        return [
+            $this->getExampleAttachmentData(1),
+            $this->getExampleAttachmentData(2),
+            $this->getExampleAttachmentData(3)
         ];
     }
 
