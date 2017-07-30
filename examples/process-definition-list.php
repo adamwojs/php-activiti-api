@@ -18,4 +18,4 @@ $client = new Client([
 $serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
 $service = $serviceFactory->createProcessDefinitionService();
 
-dump($service->getProcessDefinitionList(new ProcessDefinitionQuery()));
+var_dump($service->getProcessDefinitionList(new ProcessDefinitionQuery()));

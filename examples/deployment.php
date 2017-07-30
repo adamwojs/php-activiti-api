@@ -16,4 +16,4 @@ $client = new Client([
 
 $serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
 $deployment = $serviceFactory->createDeploymentService();
-dump($deployment->createDeployment($argv[1]));
+var_dump($deployment->createDeployment($argv[1]));

@@ -17,4 +17,4 @@ $client = new Client([
 $serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
 $service = $serviceFactory->createProcessDefinitionService();
 
-dump($service->getResourceData($argv[1]));
+var_dump($service->getResourceData($argv[1]));

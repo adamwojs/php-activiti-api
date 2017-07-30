@@ -18,4 +18,4 @@ $group = (new ServiceFactory($client, new ModelFactory(), new ObjectSerializer()
     ->createGroupService()
     ->createGroup('Group A', 'Type', 'group-a');
 
-dump($group);
+var_dump($group);

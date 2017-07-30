@@ -24,4 +24,4 @@ $service = $serviceFactory->createProcessDefinitionService();
 $data = new ProcessDefinitionUpdate();
 $data->setCategory($category);
 
-dump($service->update($id, $data));
+var_dump($service->update($id, $data));

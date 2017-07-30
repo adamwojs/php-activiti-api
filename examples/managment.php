@@ -16,5 +16,5 @@ $client = new Client([
 
 $serviceFactory = new ServiceFactory($client, new ModelFactory(), new ObjectSerializer());
 $managment = $serviceFactory->createManagementService();
-dump($managment->getEngine());
-dump($managment->getProperties());
+var_dump($managment->getEngine());
+var_dump($managment->getProperties());
