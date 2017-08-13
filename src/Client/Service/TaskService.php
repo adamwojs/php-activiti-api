@@ -495,7 +495,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
                 'action' => $action,
             ]);
 
-            return $client->request('PUT', $uri, [
+            return $client->request('POST', $uri, [
                 'json' => $payload,
             ]);
         }, Task::class);

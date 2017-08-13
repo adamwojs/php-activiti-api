@@ -818,7 +818,7 @@ class TaskServiceTest extends AbstractServiceTest
         // Call task action
         $actual = call_user_func_array([$service, $action], array_merge([$taskId], $args));
 
-        $this->assertRequestMethod('PUT');
+        $this->assertRequestMethod('POST');
         $this->assertRequestUri('runtime/tasks/' . urlencode($taskId));
         $this->assertRequestJsonPayload($payload);
     }
