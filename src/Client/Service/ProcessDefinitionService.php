@@ -20,7 +20,7 @@ class ProcessDefinitionService extends AbstractService implements ProcessDefinit
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'repository/process-definitions', [
-                'query' => (array)$query,
+                'query' => $this->serializer->serialize($query),
             ]);
         }, ProcessDefinitionList::class);
     }
