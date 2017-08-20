@@ -130,6 +130,16 @@ interface ProcessInstanceServiceInterface
     public function getVariable($processInstanceId, $variableName);
 
     /**
+     * List of variables for a process instance.
+     *
+     * @see https://www.activiti.org/userguide/#_list_of_variables_for_a_process_instance
+     *
+     * @param string $processInstanceId The id of the process instance to the variables for.
+     * @return VariableList
+     */
+    public function getVariables($processInstanceId);
+
+    /**
      * Create variables on a process instance.
      *
      * @see https://www.activiti.org/userguide/#_create_or_update_variables_on_a_process_instance
