@@ -31,7 +31,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
             return $client->request('POST', 'query/tasks', [
                 'json' => $query,
             ]);
-        }, Task::class);
+        }, TaskList::class);
     }
 
     /**
