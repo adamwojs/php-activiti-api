@@ -26,4 +26,14 @@ interface HistoryServiceInterface
      * @return mixed
      */
     public function getHistoryProcessInstanceList(HistoryQuery $historyQuery);
+
+    /**
+     * Get historic task instances
+     *
+     * @see https://www.activiti.org/userguide/#restHistoricTaskInstancesGet
+     *
+     * @param HistoryQuery $historyQuery
+     * @return mixed
+     */
+    public function historyTask(HistoryQuery $historyQuery);
 }

@@ -32,4 +32,16 @@ class HistoryService extends AbstractService implements HistoryServiceInterface
             ]);
         }, ProcessInstanceList::class);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function historyTask(HistoryQuery $historyQuery)
+    {
+        return $this->call(function (ClientInterface $client) use ($historyQuery) {
+            return $client->request('GET', 'history/historic-task-instances', [
+                'query' => $this->serializer->serialize($historyQuery),
+            ]);
+        }, ProcessInstanceList::class);
+    }
 }
