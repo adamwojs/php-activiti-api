@@ -15,4 +15,15 @@ interface HistoryServiceInterface
      * @return mixed
      */
     public function queryHistoryInstances(HistoryQuery $historyQuery);
+
+
+    /**
+     * List of historic process instances
+     *
+     * @see https://www.activiti.org/userguide/#restHistoricProcessInstancesGet
+     *
+     * @param HistoryQuery $historyQuery
+     * @return mixed
+     */
+    public function getHistoryProcessInstanceList(HistoryQuery $historyQuery);
 }
