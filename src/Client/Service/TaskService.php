@@ -29,7 +29,7 @@ class TaskService extends AbstractService implements TaskServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('POST', 'query/tasks', [
-                'json' => $this->serializer->serialize($query),
+                'json' => array_filter($this->serializer->serialize($query)),
             ]);
         }, TaskList::class);
     }
