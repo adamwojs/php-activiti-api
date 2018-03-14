@@ -16,7 +16,7 @@ class HistoryService extends AbstractService implements HistoryServiceInterface
     {
         return $this->call(function (ClientInterface $client) use ($historyQuery) {
             return $client->request('POST', 'query/historic-activity-instances', [
-                'json' => $historyQuery,
+                'json' => array_filter($this->serializer->serialize($historyQuery)),
             ]);
         }, HistoryActivityInstance::class);
     }
