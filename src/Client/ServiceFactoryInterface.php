@@ -46,4 +46,9 @@ interface ServiceFactoryInterface
      * @return UserServiceInterface
      */
     public function createUserService();
+
+    /**
+     * @return HistoryServiceInterface
+     */
+    public function createHistoryService();
 }

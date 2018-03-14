@@ -4,6 +4,7 @@ namespace Activiti\Client;
 
 use Activiti\Client\Service\DeploymentService;
 use Activiti\Client\Service\GroupService;
+use Activiti\Client\Service\HistoryService;
 use Activiti\Client\Service\ManagementService;
 use Activiti\Client\Service\ProcessDefinitionService;
 use Activiti\Client\Service\ProcessInstanceService;
@@ -89,5 +90,13 @@ class ServiceFactory implements ServiceFactoryInterface
     public function createUserService()
     {
         return new UserService($this->client, $this->modelFactory, $this->objectSerializer);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createHistoryService()
+    {
+        return new HistoryService($this->client, $this->modelFactory, $this->objectSerializer);
     }
 }
