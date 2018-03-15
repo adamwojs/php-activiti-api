@@ -25,9 +25,9 @@ interface TaskServiceInterface
      * @see https://www.activiti.org/userguide/#_query_for_tasks
      *
      * @param TaskQuery|null $query
-     * @return mixed
+     * @return TaskList
      */
-    public function queryTask(TaskQuery $query = null);
+    public function queryTasks(TaskQuery $query = null);
 
     /**
      * Get a task.
