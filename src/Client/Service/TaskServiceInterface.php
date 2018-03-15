@@ -20,6 +20,16 @@ use Activiti\Client\Model\VariableList;
 interface TaskServiceInterface
 {
     /**
+     * Query for tasks.
+     *
+     * @see https://www.activiti.org/userguide/#_query_for_tasks
+     *
+     * @param TaskQuery|null $query
+     * @return TaskList
+     */
+    public function queryTasks(TaskQuery $query = null);
+
+    /**
      * Get a task.
      *
      * @see https://www.activiti.org/userguide/#_get_a_task

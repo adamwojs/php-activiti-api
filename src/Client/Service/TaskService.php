@@ -24,6 +24,18 @@ class TaskService extends AbstractService implements TaskServiceInterface
     /**
      * {@inheritdoc}
      */
+    public function queryTasks(TaskQuery $query = null)
+    {
+        return $this->call(function (ClientInterface $client) use ($query) {
+            return $client->request('POST', 'query/tasks', [
+                'json' => array_filter($this->serializer->serialize($query)),
+            ]);
+        }, TaskList::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTask($taskId)
     {
         return $this->call(function (ClientInterface $client) use ($taskId) {

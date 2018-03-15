@@ -28,6 +28,18 @@ class TaskServiceTest extends AbstractServiceTest
         $this->assertRequestUri('runtime/tasks/' . $taskId);
     }
 
+    public function testQueryTask()
+    {
+        $expected = $this->getExampleTask();
+        $client = $this->createClient($this->createJsonResponse($expected, 200));
+        $actual = $this
+            ->createTaskService($client)
+            ->queryTask(new TaskQuery([]));
+
+        $this->assertRequestMethod('POST');
+        $this->assertRequestUri('query/tasks');
+    }
+
     public function testGetTaskOnNonExistingTaskId()
     {
         $this->expectException(ActivitiException::class);
