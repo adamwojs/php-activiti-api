@@ -17,7 +17,7 @@ class DeploymentService extends AbstractService implements DeploymentServiceInte
     {
         return $this->call(function (ClientInterface $client) use ($query) {
             return $client->request('GET', 'repository/deployments', [
-                'query' => (array)$query,
+                'query' => $this->serializer->serialize($query)
             ]);
         }, DeploymentList::class);
     }
